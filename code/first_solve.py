@@ -1,3 +1,6 @@
+import generator as generator
+
+
 def is_subsequence(l: list, subl: list):
     pos=0
     for i in l:
@@ -44,4 +47,8 @@ def solve(s:list, t:list):
 
 
 
-solve('()', '(((')
+
+# solve('()', '(((')
+
+
+
