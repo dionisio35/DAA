@@ -2,7 +2,7 @@ from generator import generate_n
 from first_solve import solve
 
 
-def test(method:function, times:int, min_len:int,max_len:int):
+def test(method, times:int, min_len:int,max_len:int):
     gen = generate_n(times,min_len,max_len)
     for i in range(times):
         real_solves:list = solve(gen[i][0],gen[i][1])
@@ -14,7 +14,5 @@ def test(method:function, times:int, min_len:int,max_len:int):
 
 
 
-
         
-
 

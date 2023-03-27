@@ -20,6 +20,6 @@ def generate_string(len:int,a="(",b=")"):
             word+=b
     return word
             
-print(generate_n(5,5,10,"r","e"))
+print(generate_n(5,5,10,"(",")"))
 
 

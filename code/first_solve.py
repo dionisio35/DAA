@@ -43,9 +43,8 @@ def solve(s:list, t:list):
         if len(s) == len(i):
             solution.append(i)
     print(solution)
+    return solution
     
-
-
 
 
 # solve('()', '(((')
