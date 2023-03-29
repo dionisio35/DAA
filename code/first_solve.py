@@ -2,6 +2,7 @@ import generator as generator
 
 
 def is_subsequence(l: list, subl: list):
+    '''...'''
     pos=0
     for i in l:
         if i == subl[pos]:
@@ -11,18 +12,20 @@ def is_subsequence(l: list, subl: list):
     return False
 
 def is_valid(l: list):
+    '''...'''
     n= 0
     for i in l:
         if n < 0:
             return False
-        if i == '(':
+        if i == 'e':
             n+=1
-        if i == ')':
+        if i == 'r':
             n-=1
     return n == 0
 
 
 def solve(s:list, t:list):
+    '''...'''
     sol= []
     l= ['']
     while l:
@@ -31,8 +34,8 @@ def solve(s:list, t:list):
             sol.append(temp)
         
         if len(temp) <= 2*len(s+t) -1:
-            l.append(temp + '(')
-            l.append(temp + ')')
+            l.append(temp + 'e')
+            l.append(temp + 'r')
     
     s= sol[0]
     solution= []
@@ -42,7 +45,8 @@ def solve(s:list, t:list):
             solution= []
         if len(s) == len(i):
             solution.append(i)
-    print(solution)
+    
+    return solution
     
 
 
