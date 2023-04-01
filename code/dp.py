@@ -32,10 +32,18 @@ def min_sequence(c,v,a,b):
     return c
 
 def get_better_chain(ct,cs,t,s,a,b):
+    if is_subsequence(ct,s) and is_subsequence(cs,t):
+        return min_sequence(cs,ct,a,b)
+    # if is_subsequence(cs,t):
+    #     return cs
+    # if is_subsequence(ct,s):
+    #     return ct
+
     if is_subsequence(cs,ct) or is_subsequence(cs,t):
         return cs
     if is_subsequence(ct,cs) or is_subsequence(ct,s):
         return ct
+
     cs = cs+t[len(t)-1]
     ct = ct + s[len(s)-1]
     return min_sequence(cs,ct,a,b) 
@@ -57,7 +65,7 @@ def get_balance(l,a,b):
     balanced += balance*b
     return balanced
 
-
+import numpy as np
 
 def spies_dp(s,t,a="(",b=")"):
     n=len(s)
@@ -65,8 +73,11 @@ def spies_dp(s,t,a="(",b=")"):
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
+            if(i==3 and j==4):
+                print("here")
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
-    # return dp[len(dp)-1][ len(dp[0])-1]            
+    # return dp[len(dp)-1][ len(dp[0])-1]      
+    print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
             
 
@@ -76,7 +87,8 @@ def spies_dp(s,t,a="(",b=")"):
 s=")((()(("      
 t="))(((((()"
 
-
+s="()((" 
+t="())("
 a=spies_dp(s,t)
 print(a,len(a))
 
