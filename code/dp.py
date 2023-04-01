@@ -12,11 +12,11 @@ def create_matrix(s,t,n,m):
     return dp
 
 
-def get_n_to_balanced(a):
+def get_n_to_balanced(s,a,b):
     neq=0
     pos=0
-    for i in a:
-        if(i=="("):
+    for i in s:
+        if(i==a):
             pos+=1
         else: 
             if(pos):
@@ -26,30 +26,48 @@ def get_n_to_balanced(a):
     return neq+pos
             
 
-def min_sequence(a,b):    
-    if((len(a)+get_n_to_balanced(a))>(len(b)+get_n_to_balanced(b))):
-        return b
-    return a
+def min_sequence(c,v,a,b):    
+    if((len(c)+get_n_to_balanced(c,a,b))>(len(v)+get_n_to_balanced(v,a,b))):
+        return v
+    return c
 
-def get_better_chain(ct,cs,t,s):
+def get_better_chain(ct,cs,t,s,a,b):
     if is_subsequence(cs,ct) or is_subsequence(cs,t):
         return cs
     if is_subsequence(ct,cs) or is_subsequence(ct,s):
         return ct
     cs = cs+t[len(t)-1]
     ct = ct + s[len(s)-1]
-    return min_sequence(cs,ct) 
+    return min_sequence(cs,ct,a,b) 
+
+
+def get_balance(l,a,b):
+    balance=0
+    balanced=""
+    for i in l:
+        if(i==a):
+            balanced+=i
+            balance+=1
+        else:
+            if balance:
+                balance-=1
+                balanced+=i
+            else:   
+                balanced+= a+i
+    balanced += balance*a
+    return balanced
 
 
 
-def spies_dp(s,t):
+def spies_dp(s,t,a="(",b=")"):
     n=len(s)
     m=len(t)
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
-            dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0])
-    return dp[len(dp)-1][ len(dp[0])-1]
+            dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
+    # return dp[len(dp)-1][ len(dp[0])-1]            
+    return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
             
 
 # s="(()("
@@ -58,3 +76,4 @@ def spies_dp(s,t):
 # a=spies_dp(s,t)
 # print(a,len(a))
 
+# print(")"*5)
