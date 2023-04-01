@@ -54,7 +54,7 @@ def get_balance(l,a,b):
                 balanced+=i
             else:   
                 balanced+= a+i
-    balanced += balance*a
+    balanced += balance*b
     return balanced
 
 
@@ -73,7 +73,11 @@ def spies_dp(s,t,a="(",b=")"):
 # s="(()("
 # t= ")))"
 
-# a=spies_dp(s,t)
-# print(a,len(a))
+s=")((()(("      
+t="))(((((()"
+
+
+a=spies_dp(s,t)
+print(a,len(a))
 
 # print(")"*5)
