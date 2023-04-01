@@ -29,7 +29,7 @@ def brute_force_algorithm(s:str,t:str):
 
 
 
-print("Solve",solve('()', '((('))
+# print("Solve",solve('()', '((('))
 print("brute_force_algorithm",brute_force_algorithm('()', '((('))
 
 
