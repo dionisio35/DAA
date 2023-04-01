@@ -1,17 +1,6 @@
-
-
-def is_subsequence(l: list, subl: list):
-    '''...'''
-    pos=0
-    for i in l:
-        if i == subl[pos]:
-            pos+=1
-        if pos == len(subl):
-            return True
-    return False
+from first_solve import is_subsequence
 
 def is_valid(l: list):
-    '''...'''
     n= 0
     if not l:
         return -1
@@ -26,10 +15,7 @@ def is_valid(l: list):
     return n
 
 
-
-
 def solve(s:list, t:list):
-    '''...'''
     sol= []
     l= ['']
     while l:

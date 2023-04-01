@@ -1,12 +1,10 @@
-# from first_solve import solve as solve1
-# from second_solve import solve as solve2
 from generator import generate_n
 from brute_force import brute_force_algorithm
 
 import sys
 from time import time
 from colorama import init, Fore
-from dp import spies_dp
+# from dp import spies_dp
 
 
 def same_solution(s1, s2):
@@ -66,6 +64,10 @@ def test(method, times:int, min_len:int, max_len:int):
 
 if __name__ == '__main__':
     times = int(sys.argv[1])
-    min = int(sys.argv[2])
-    max = int(sys.argv[3])
-    test(spies_dp, times, min, max)
+    try:
+        min = int(sys.argv[2])
+        max = int(sys.argv[3])
+        test(brute_force_algorithm, times, min, max)
+    except IndexError:
+        n = int(sys.argv[2])
+        test(brute_force_algorithm, times, n, n)
