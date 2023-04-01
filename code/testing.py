@@ -1,9 +1,12 @@
-from generator import generate_n
 # from first_solve import solve as solve1
 # from second_solve import solve as solve2
+from generator import generate_n
 from brute_force import brute_force_algorithm
 
+import sys
 from time import time
+from colorama import init, Fore
+from dp import spies_dp
 
 
 def same_solution(s1, s2):
@@ -22,6 +25,7 @@ def error(solution):
 
 
 def test(method, times:int, min_len:int, max_len:int):
+    init()
     gen = generate_n(times, min_len, max_len)
     
     count_errors=0
@@ -48,22 +52,20 @@ def test(method, times:int, min_len:int, max_len:int):
                 error(test_solve)
 
     print()
-    print(f'Ran {times} tests in {time_best+time_bf}')
-    print('Brute force time:', time_bf, 'seconds')
-    print('Test method time:', time_best, 'seconds')
+    print(Fore.BLUE + 'Ran {} tests in {:.2f} seconds'.format(times, time_best+time_bf))
+    print(Fore.CYAN + 'Brute force time: {:.2f} seconds'.format(time_bf))
+    print(Fore.CYAN + 'Test method time: {:.2f} seconds'.format(time_best))
     print()
 
     if count_errors == 0:
-        print('OK')
+        print(Fore.GREEN + 'OK')
     else:
-        print('FAILED', f'(failures={count_errors})')
+        print(Fore.RED + 'FAILED(failures={})'.format(count_errors))
+    print()
     
 
-
-test(brute_force_algorithm, 5, 11, 11)
-
-
-
-
-# if __name__ == '__main__':
-#     test()
+if __name__ == '__main__':
+    times = int(sys.argv[1])
+    min = int(sys.argv[2])
+    max = int(sys.argv[3])
+    test(spies_dp, times, min, max)
