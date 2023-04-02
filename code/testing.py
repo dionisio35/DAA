@@ -13,52 +13,53 @@ def same_solution(s1, s2):
             return False
     return True
 
-def error(solution, s1, s2):
+def error(solution, s1, s2, solutions):
     print('===================================')
     print()
-    print('Fail:')
-    print(solution, 'is not a solution of {}, {}'.format(s1, s2))
+    print(Fore.RED +  'Fail:', Fore.RESET)
+    print('{} is not a solution of {}, {}'.format(solution, s1, s2))
+    print('Expected: {}'.format(solutions))
     print()
     print('===================================')
 
 
 def test(method, times:int, min_len:int, max_len:int):
     init()
-    gen = generate_n(times, min_len, max_len)
+    generated_cases = generate_n(times, min_len, max_len)
     
     count_errors=0
     time_bf=0
     time_best=0
-    for i in range(times):
+    for case in generated_cases:
         
         t= time()
-        bf_solves = brute_force_algorithm(gen[i][0], gen[i][1])
+        bf_solves = brute_force_algorithm(case[0], case[1])
         time_bf+= time()- t
 
         t= time()
-        test_solve= method(gen[i][0], gen[i][1])
+        test_solve= method(case[0], case[1])
         time_best+= time()- t
 
         if isinstance(test_solve, list):
             if not same_solution(test_solve, bf_solves):
                 count_errors+=1
-                error(test_solve, gen[i][0], gen[i][1])
+                error(test_solve, case[0], case[1], bf_solves)
                 
         else:
             if test_solve not in bf_solves:
                 count_errors+=1
-                error(test_solve, gen[i][0], gen[i][1])
+                error(test_solve, case[0], case[1], bf_solves)
 
     print()
     print(Fore.BLUE + 'Ran {} tests in {:.2f} seconds'.format(times, time_best+time_bf))
-    print(Fore.CYAN + 'Brute force time: {:.2f} seconds'.format(time_bf))
-    print(Fore.CYAN + 'Test method time: {:.2f} seconds'.format(time_best))
+    print('Brute force time: {:.2f} seconds'.format(time_bf))
+    print('Test method time: {:.2f} seconds'.format(time_best), Fore.RESET)
     print()
 
     if count_errors == 0:
-        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'OK', Fore.RESET)
     else:
-        print(Fore.RED + 'FAILED(failures={})'.format(count_errors))
+        print(Fore.RED + 'FAILED(failures={})'.format(count_errors), Fore.RESET)
     print()
     
 import argparse
