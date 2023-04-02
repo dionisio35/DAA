@@ -44,3 +44,4 @@ def solve(s:list, t:list):
             solution.append(i)
     
     return solution
+

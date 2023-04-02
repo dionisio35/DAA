@@ -36,8 +36,8 @@ def brute_force_algorithm(s:str, t:str):
 
 
 
-s="()())" 
-t="(()))"
+# s="()())" 
+# t="(()))"
 
-a=brute_force_algorithm(s,t)
-print(a,len(a))
+# a=brute_force_algorithm(s,t)
+# print(a,len(a))

@@ -5,7 +5,8 @@ import sys
 from time import time
 from colorama import init, Fore
 from dp import spies_dp
-from gpt import menor_cadena_balanceada
+from dp2 import dp2
+# from gpt import menor_cadena_balanceada
 
 
 def same_solution(s1, s2):
@@ -70,12 +71,16 @@ if __name__ == '__main__':
     try:
         min = int(sys.argv[2])
         max = int(sys.argv[3])
-        test(spies_dp, times, min, max)
+        # test(spies_dp, times, min, max)
+        test(dp2, times, min, max)
+
         # test(menor_cadena_balanceada, times, min, max)
 
     except IndexError:
         n = int(sys.argv[2])
-        test(spies_dp, times, n, n)
+        # test(spies_dp, times, n, n)
+        test(dp2, times, n, n)
+
         # test(menor_cadena_balanceada, times, n, n)
 
 
