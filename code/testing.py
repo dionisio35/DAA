@@ -7,15 +7,11 @@ from dynamic_solve import solve
 import sys
 from time import time
 from colorama import init, Fore
-<<<<<<< Updated upstream
 from dp import spies_dp
 from dp2 import dp2
 from dp3 import dp3
 
 # from gpt import menor_cadena_balanceada
-=======
-
->>>>>>> Stashed changes
 
 
 def same_solution(s1, s2):
@@ -80,27 +76,16 @@ if __name__ == '__main__':
     try:
         min = int(sys.argv[2])
         max = int(sys.argv[3])
-<<<<<<< Updated upstream
+        test(solve, times, min, max)
         # test(spies_dp, times, min, max)
         # test(dp2, times, min, max)
-        test(dp3, times, min, max)
-
-
-
-    except IndexError:
-        n = int(sys.argv[2])
-        # test(spies_dp, times, n, n)
-        # test(dp2, times, n, n)
-        test(dp3, times, n, n)
-
-
-=======
-        test(solve, times, min, max)
+        # test(dp3, times, min, max)
     except IndexError:
         n = int(sys.argv[2])
         test(solve, times, n, n)
->>>>>>> Stashed changes
-
+        # test(spies_dp, times, n, n)
+        # test(dp2, times, n, n)
+        # test(dp3, times, n, n)
     # parser = argparse.ArgumentParser("simple_example")
     # parser.add_argument("counter", help="An integer will be increased by 1 and printed.", type=int)
     # args = parser.parse_args()
