@@ -3,7 +3,7 @@ from brute_force import brute_force_algorithm
 from second_solve import solve
 
 def create_matrix(s,t,n,m):
-    dp= [["" for j in range(m+1)] for i in range(n+1) ] #create the nXm matrix
+    dp= [["" for j in range(m+1)] for i in range(n+1) ]
     for i in range(1,len(dp)):
         dp[i][0]=s[0:i]
     for i in range(1,len(dp[0])):
@@ -40,30 +40,6 @@ def get_balance(l,a,b):
                 balanced+= a+i
     balanced += balance*b
     return balanced
-
-
- 
-
-# def min_sequence(possibles_sequences,a,b):    
-#     m=10e31
-#     s=""
-#     for i in possibles_sequences:
-#         temp=len(i)+get_n_to_balanced(i,a,b)
-#         if temp < m:
-#             m=temp
-#             s=i
-#     return s
-    
-
-# def min_sequence(possibles_sequences,a,b):    
-#     m=10e31
-#     s=""
-#     for i in possibles_sequences:
-#         i=get_balance(i,a,b)
-#         if len(i) < m:
-#             m=len(i)
-#             s=i
-#     return s
     
 
 def min_sequence(possibles_sequences,a,b):    
@@ -112,8 +88,6 @@ def spies_dp(s,t,a="(",b=")"):
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
-            # if(i==3 and j==4):
-                # print("here")
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
     print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
@@ -121,28 +95,28 @@ def spies_dp(s,t,a="(",b=")"):
 
 
 
-s="(()("
-t= ")))"
+# s="(()("
+# t= ")))"
 
-s=")((()(("      
-t="))(((((()"
+# s=")((()(("      
+# t="))(((((()"
 
-s="()((" 
-t="())("
-
-
-s="())("
-t=")((("
-
-s="(()("
-t=")((("
+# s="()((" 
+# t="())("
 
 
-s="()())" 
-t="(()))"
+# s="())("
+# t=")((("
+
+# s="(()("
+# t=")((("
 
 
-from time import time
+# s="()())" 
+# t="(()))"
+
+
+# from time import time
 
 # t1=time()
 # a=spies_dp(s,t)

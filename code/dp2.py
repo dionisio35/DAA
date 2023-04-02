@@ -11,7 +11,6 @@ def create_matrix(s,t,n,m):
         dp[i][0]=[s[0:i]]
     for i in range(1,len(dp[0])):
         dp[0][i]=[t[0:i]]
-    # print(dp)
     return dp
 
 
@@ -34,44 +33,8 @@ def get_balanced_chains(input,a,b):
         result.add(balanced)
     return list(result)
 
-
-# def min_sequences(possibles_sequences,a,b):    
-#     m=10e31
-#     sequences:set=set()
-#     for i in possibles_sequences:
-#         ni0,ni1=get_n_to_balanced(i,a,b)
-#         mi=len(i)+ ni0+ni1
-
-#         if mi < m:
-#             sequences=set()
-#             sequences.add(i)
-#             m=mi
-
-#         elif mi == m:
-#             sequences.add(i)
- 
-#     return list(sequences)
-
-# def get_better_chains(ct,cs,t,s,a,b):
-#     possibles_sequences=[]
-#     # if is_subsequence(ct,s) and is_subsequence(cs,t):
-#     #     possibles_sequences.append(min_sequence([cs,ct],a,b))
-#     for csi in cs:
-#             if is_subsequence(csi,t):
-#                 possibles_sequences.append(csi)
-#             possibles_sequences.append(csi + t[len(t)-1])
-
-#     for cti in ct:
-#         if is_subsequence(cti,s):
-#             possibles_sequences.append(cti)    
-#         possibles_sequences.append(cti + s[len(s)-1])
-#     return min_sequences(possibles_sequences,a,b) 
-
-
 def get_better_chains(ct,cs,t,s,a,b):
     possibles_sequences:set=set()
-    # if is_subsequence(ct,s) and is_subsequence(cs,t):
-    #     possibles_sequences.append(min_sequence([cs,ct],a,b))
     for csi in cs:
             if is_subsequence(csi,t):
                 possibles_sequences.add(csi)
@@ -103,11 +66,7 @@ def dp2(s,t,a="(",b=")"):
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
-            # if(i==3 and j==4):
-                # print("here")
             dp[i][j] = get_better_chains(dp[i-1][j], dp[i][j-1],dp[0][j][0],dp[i][0][0],a,b)
-    # print(np.array(dp)) 
-    # print(dp[1])
     solutions = get_balanced_chains(dp[len(dp)-1][ len(dp[0])-1],a,b)
     return get_min(solutions)
 
