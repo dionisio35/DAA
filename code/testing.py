@@ -4,7 +4,7 @@ from brute_force import brute_force_algorithm
 import sys
 from time import time
 from colorama import init, Fore
-# from dp import spies_dp
+from dp import spies_dp
 
 
 def same_solution(s1, s2):
@@ -13,11 +13,11 @@ def same_solution(s1, s2):
             return False
     return True
 
-def error(solution):
+def error(solution, s1, s2):
     print('===================================')
     print()
     print('Fail:')
-    print(solution, 'is not a solution')
+    print(solution, 'is not a solution of {}, {}'.format(s1, s2))
     print()
     print('===================================')
 
@@ -42,12 +42,12 @@ def test(method, times:int, min_len:int, max_len:int):
         if isinstance(test_solve, list):
             if not same_solution(test_solve, bf_solves):
                 count_errors+=1
-                error(test_solve)
+                error(test_solve, gen[i][0], gen[i][1])
                 
         else:
             if test_solve not in bf_solves:
                 count_errors+=1
-                error(test_solve)
+                error(test_solve, gen[i][0], gen[i][1])
 
     print()
     print(Fore.BLUE + 'Ran {} tests in {:.2f} seconds'.format(times, time_best+time_bf))
@@ -61,13 +61,19 @@ def test(method, times:int, min_len:int, max_len:int):
         print(Fore.RED + 'FAILED(failures={})'.format(count_errors))
     print()
     
+import argparse
 
 if __name__ == '__main__':
     times = int(sys.argv[1])
     try:
         min = int(sys.argv[2])
         max = int(sys.argv[3])
-        test(brute_force_algorithm, times, min, max)
+        test(spies_dp, times, min, max)
     except IndexError:
         n = int(sys.argv[2])
-        test(brute_force_algorithm, times, n, n)
+        test(spies_dp, times, n, n)
+
+    # parser = argparse.ArgumentParser("simple_example")
+    # parser.add_argument("counter", help="An integer will be increased by 1 and printed.", type=int)
+    # args = parser.parse_args()
+    # print(args.counter + 1)
