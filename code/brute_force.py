@@ -7,8 +7,8 @@ def generate_all_balanced_len_n(n, mem):
     """generate all the sequences balanced of lenth n"""
     n_list=[]
     for c in mem[n-1]:
-        n_list.append(c + "e")
-        n_list.append(c + "r")
+        n_list.append(c + "(")
+        n_list.append(c + ")")
     return n_list
 
 def solved(elems, s, t):

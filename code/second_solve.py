@@ -8,9 +8,9 @@ def is_valid(l: list):
     for i in l:
         if n < 0:
             return -1
-        if i == 'e':
+        if i == '(':
             n+=1
-        if i == 'r':
+        if i == ')':
             n-=1
     return n
 
@@ -24,11 +24,11 @@ def solve(s:list, t:list):
             sol.append(temp)
         
         if len(temp) <= 2*len(s+t) -1:
-            if (temp + 'e').count('e') <= (len(s+t) + 1)/2:
-                l.append(temp + 'e')
+            if (temp + '(').count('(') <= (len(s+t) + 1)/2:
+                l.append(temp + '(')
 
-            if is_valid(temp + 'r') >= 0:
-                l.append(temp + 'r')
+            if is_valid(temp + ')') >= 0:
+                l.append(temp + ')')
     
     s= sol[0]
     solution= []

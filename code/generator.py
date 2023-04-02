@@ -1,6 +1,6 @@
 from random import randint
 
-def generate_n(n:int, min:int, max:int, a="e", b="r"):
+def generate_n(n:int, min:int, max:int, a="(", b=")"):
     cases=[]
 
     for _ in range(n):
@@ -10,7 +10,7 @@ def generate_n(n:int, min:int, max:int, a="e", b="r"):
         cases.append((generate_string(len1, a, b), generate_string(len2, a, b)))
     return cases
 
-def generate_string(len:int, a="e", b="r"):
+def generate_string(len:int, a="(", b=")"):
     word= ""
 
     for _ in range(len):

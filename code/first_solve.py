@@ -15,9 +15,9 @@ def is_valid(l: list):
     for i in l:
         if n < 0:
             return False
-        if i == 'e':
+        if i == '(':
             n+=1
-        if i == 'r':
+        if i == ')':
             n-=1
     return n == 0
 
@@ -31,8 +31,8 @@ def solve(s:list, t:list):
             sol.append(temp)
         
         if len(temp) <= 2*len(s+t) -1:
-            l.append(temp + 'e')
-            l.append(temp + 'r')
+            l.append(temp + '(')
+            l.append(temp + ')')
     
     s= sol[0]
     solution= []
