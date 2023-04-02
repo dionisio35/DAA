@@ -74,14 +74,12 @@ if __name__ == '__main__':
         # test(spies_dp, times, min, max)
         test(dp2, times, min, max)
 
-        # test(menor_cadena_balanceada, times, min, max)
 
     except IndexError:
         n = int(sys.argv[2])
         # test(spies_dp, times, n, n)
         test(dp2, times, n, n)
 
-        # test(menor_cadena_balanceada, times, n, n)
 
 
     # parser = argparse.ArgumentParser("simple_example")
