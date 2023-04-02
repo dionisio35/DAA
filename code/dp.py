@@ -26,27 +26,39 @@ def get_n_to_balanced(s,a,b):
     return neq+pos
             
 
-def min_sequence(c,v,a,b):    
-    if((len(c)+get_n_to_balanced(c,a,b))>(len(v)+get_n_to_balanced(v,a,b))):
-        return v
-    return c
+def min_sequence(possibles_sequences,a,b):    
+    m=10e31
+    s=""
+    for i in possibles_sequences:
+        temp=len(i)+get_n_to_balanced(i,a,b)
+        if temp < m:
+            m=temp
+            s=i
+    return s
+    
+
+
+    # if((len(c)+get_n_to_balanced(c,a,b))>(len(v)+get_n_to_balanced(v,a,b))):
+    #     return v
+    # return c
 
 def get_better_chain(ct,cs,t,s,a,b):
+    possibles_sequences=[]
     if is_subsequence(ct,s) and is_subsequence(cs,t):
-        return min_sequence(cs,ct,a,b)
-    # if is_subsequence(cs,t):
+        possibles_sequences.append(min_sequence([cs,ct],a,b))
+    elif is_subsequence(cs,t):
+        possibles_sequences.append(cs)
+    elif is_subsequence(ct,s):
+        possibles_sequences.append(ct)
+
+    # if is_subsequence(cs,ct) or is_subsequence(cs,t):
     #     return cs
-    # if is_subsequence(ct,s):
+    # if is_subsequence(ct,cs) or is_subsequence(ct,s):
     #     return ct
 
-    if is_subsequence(cs,ct) or is_subsequence(cs,t):
-        return cs
-    if is_subsequence(ct,cs) or is_subsequence(ct,s):
-        return ct
-
-    cs = cs+t[len(t)-1]
-    ct = ct + s[len(s)-1]
-    return min_sequence(cs,ct,a,b) 
+    possibles_sequences.append(cs+t[len(t)-1])
+    possibles_sequences.append(ct + s[len(s)-1])
+    return min_sequence(possibles_sequences,a,b) 
 
 
 def get_balance(l,a,b):
