@@ -27,13 +27,3 @@ def brute_force_algorithm(s:str, t:str):
         if(len(solutions_n)):
             return solutions_n
 
-
-
-# print("Solve",solve('()', '((('))
-print("brute_force_algorithm",brute_force_algorithm('()', '((('))
-
-
-
-
-
-
