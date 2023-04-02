@@ -26,17 +26,49 @@ def get_n_to_balanced(s,a,b):
     return neq+pos
             
 
+# def min_sequence(possibles_sequences,a,b):    
+#     m=10e31
+#     s=""
+#     for i in possibles_sequences:
+#         temp=len(i)+get_n_to_balanced(i,a,b)
+#         if temp < m:
+#             m=temp
+#             s=i
+#     return s
+    
+
+# def min_sequence(possibles_sequences,a,b):    
+#     m=10e31
+#     s=""
+#     for i in possibles_sequences:
+#         i=get_balance(i,a,b)
+#         if len(i) < m:
+#             m=len(i)
+#             s=i
+#     return s
+    
+
 def min_sequence(possibles_sequences,a,b):    
     m=10e31
+    n=10e31
     s=""
     for i in possibles_sequences:
-        i=get_balance(i,a,b)
-        # temp=len(i)+get_n_to_balanced(i,a,b)
-        if len(i) < m:
-            m=len(i)
+        mi=len(i)
+        ni=get_n_to_balanced(i,a,b)
+        if (mi + ni) < (m + n):
+            m=mi
+            n=ni
             s=i
+        elif (mi + ni) == (m + n):
+            if ni < n:
+                m = mi
+                n = ni
+                s = i            
     return s
-    
+
+
+
+
 
 
     # if((len(c)+get_n_to_balanced(c,a,b))>(len(v)+get_n_to_balanced(v,a,b))):
@@ -111,19 +143,29 @@ def spies_dp(s,t,a="(",b=")"):
                 # print("here")
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
     # return dp[len(dp)-1][ len(dp[0])-1]      
-    # print(np.array(dp))      
+    print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
             
 
+
+
+s="(()("
+t= ")))"
+
+s=")((()(("      
+t="))(((((()"
+
+s="()((" 
+t="())("
+
+
+# s="())("
+# t=")((("
+
 # s="(()("
-# t= ")))"
+# t=")((("
 
-# s=")((()(("      
-# t="))(((((()"
-
-# s="()((" 
-# t="())("
-# a=spies_dp(s,t)
-# print(a,len(a))
+a=spies_dp(s,t)
+print(a,len(a))
 
 # print(")"*5)
