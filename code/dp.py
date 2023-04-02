@@ -72,25 +72,6 @@ def min_sequence(possibles_sequences,a,b):
     return s
 
 
-# def get_better_chain(ct,cs,t,s,a,b):
-#     possibles_sequences=[]
-#     if is_subsequence(ct,s) and is_subsequence(cs,t):
-#         possibles_sequences.append(min_sequence([cs,ct],a,b))
-#     elif is_subsequence(cs,t):
-#         possibles_sequences.append(cs)
-#     elif is_subsequence(ct,s):
-#         possibles_sequences.append(ct)
-
-#     # if is_subsequence(cs,ct) or is_subsequence(cs,t):
-#     #     return cs
-#     # if is_subsequence(ct,cs) or is_subsequence(ct,s):
-#     #     return ct
-
-#     possibles_sequences.append(cs+t[len(t)-1])
-#     possibles_sequences.append(ct + s[len(s)-1])
-#     return min_sequence(possibles_sequences,a,b) 
-
-
 
 def get_better_chain(ct,cs,t,s,a,b):
     possibles_sequences=[]
@@ -100,12 +81,6 @@ def get_better_chain(ct,cs,t,s,a,b):
         possibles_sequences.append(cs)
     elif is_subsequence(ct,s):
         possibles_sequences.append(ct)
-
-    # if is_subsequence(cs,ct) or is_subsequence(cs,t):
-    #     possibles_sequences.append(cs)
-    # if is_subsequence(ct,cs) or is_subsequence(ct,s):
-    #     possibles_sequences.append(ct)
-
     possibles_sequences.append(cs+t[len(t)-1])
     possibles_sequences.append(ct + s[len(s)-1])
     return min_sequence(possibles_sequences,a,b) 
@@ -131,8 +106,6 @@ def get_balance(l,a,b):
 import numpy as np
 
 def spies_dp(s,t,a="(",b=")"):
-    # s=get_balance(s,a,b)
-    # t=get_balance(t,a,b)
     n=len(s)
     m=len(t)
     dp=create_matrix(s,t,n,m)
@@ -141,7 +114,6 @@ def spies_dp(s,t,a="(",b=")"):
             # if(i==3 and j==4):
                 # print("here")
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
-    # return dp[len(dp)-1][ len(dp[0])-1]      
     # print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
             
@@ -173,4 +145,3 @@ a=spies_dp(s,t)
 
 print(a,len(a))
 
-# print(")"*5)
