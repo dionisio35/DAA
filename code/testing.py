@@ -10,6 +10,8 @@ from colorama import init, Fore
 <<<<<<< Updated upstream
 from dp import spies_dp
 from dp2 import dp2
+from dp3 import dp3
+
 # from gpt import menor_cadena_balanceada
 =======
 
@@ -80,13 +82,16 @@ if __name__ == '__main__':
         max = int(sys.argv[3])
 <<<<<<< Updated upstream
         # test(spies_dp, times, min, max)
-        test(dp2, times, min, max)
+        # test(dp2, times, min, max)
+        test(dp3, times, min, max)
+
 
 
     except IndexError:
         n = int(sys.argv[2])
         # test(spies_dp, times, n, n)
-        test(dp2, times, n, n)
+        # test(dp2, times, n, n)
+        test(dp3, times, n, n)
 
 
 =======

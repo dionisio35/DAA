@@ -21,4 +21,8 @@ L1: r,r,e,r L2: e,e,r (para r: recoger y e: enviar)
 Usted es un mediador de paz, por tanto su tarea es construir una lista de órdenes que contenga las listas de los dos generales, agregando la menor cantidad de órdenes posibles (al principio en el medio o al final), ya sea de enviar o recoger información, de manera que no fusilen a nadie.
 
 
+####Solución 
+
+La interpretación del problema es la siguiente tengo dos string s y t, conformados únicamente por los caracteres: "e" y "r". De estos se quiere buscar un algoritmo que dados cualquier s y cualquier t encuentre la menor cadena que contenga como subsecuencias a s y a t y que además sea una cadena de "paréntesis balanceados". 
+
 
