@@ -58,7 +58,6 @@ def get_min(sol):
 def dp3(s,t,a="(",b=")"):
     n=len(s)
     m=len(t)
-    balance=0
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
