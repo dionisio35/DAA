@@ -30,6 +30,16 @@ def get_balanced_chains(input,a,b):
         result.add(balanced)
     return list(result)
 
+
+def filter(seq,n,m,a,b):
+    result=[]
+    for i in seq:
+        ni=get_n_to_balanced(i,a,b)
+        if ni[0]+ni[1]+len(i)<=2*(n+m):
+            result.append(i)
+    return result
+
+
 def get_better_chains(ct,cs,t,s,a,b):
     possibles_sequences:set=set()
     for csi in cs:
@@ -41,7 +51,7 @@ def get_better_chains(ct,cs,t,s,a,b):
         if is_subsequence(cti,s):
             possibles_sequences.add(cti)    
         possibles_sequences.add(cti + s[len(s)-1])
-    return possibles_sequences
+    return filter(possibles_sequences,len(s),len(t),a,b)
 
 
 
@@ -66,3 +76,5 @@ def dp2(s,t,a="(",b=")"):
             dp[i][j] = get_better_chains(dp[i-1][j], dp[i][j-1],dp[0][j][0],dp[i][0][0],a,b)
     solutions = get_balanced_chains(dp[len(dp)-1][ len(dp[0])-1],a,b)
     return get_min(solutions)
+
+

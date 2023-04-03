@@ -1,11 +1,23 @@
 from tools import *
 
+
+def get_balance(c):
+    """get the balance of a string suposing that the string doesn't have negative balance"""
+    balance = 0
+    for i in c:
+        if i == "(":
+            balance += 1
+        else:
+            balance -= 1
+    return balance
+
 def generate_all_balanced_len_n(n, mem):
     """generate all the sequences balanced of lenth n"""
     n_list=[]
     for c in mem[n-1]:
         n_list.append(c + "(")
-        n_list.append(c + ")")
+        if get_balance(c + "(") > 0:
+            n_list.append(c + ")")
     return n_list
 
 def solved(elems, s, t):
@@ -23,3 +35,5 @@ def brute_force_algorithm(s:str, t:str):
         solutions_n=solved(mem[i], s, t)
         if(len(solutions_n)):
             return solutions_n
+
+
