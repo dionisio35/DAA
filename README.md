@@ -65,6 +65,12 @@ En un segundo intento tenemos en el archivo `second_solve.py` en el cual se usa 
 
 Este se ejecuta igualmente con una complejidad temporal de $O(2^n)$, pero con un tiempo de ejecución más bajo debido a las podas en el árbol de búsqueda.
 
+Como tercer interto tenemos el algoritmo que se encuentra en `brute_force.py` es un algoritmo de fuerza bruta que en cada iteración genera para toda $i$ comprendida entre $1$ y $2*(n+m)$ todas las posibles cadenas de longitud $i$ y verifica si entre ellas existe una o varias que cumplan [1], [2] y [3], en este caso se retornan todas las estas cadenas de tamaño $i$ mínimo. Siempre devuelve todas las soluciones de tamaño mínimo porque genera y comprueba las cadenas de forma creciente, nunca va a buscar soluciones de tamaño $i+1$ si no verificó todas las de tamanno $i$.
+
+Su complejidad es $O(2^n)$ donde n es el tamaño de las soluciones encontradas, acotadas superiormente por $2*(n+m)$. Es de esta forma porque en cada iteración se generan todas las posibles cadenas de longitud $i$ ya que por cada cadena de tamano $i-1$ se genera una cadena de tamaño $i$ agregando un "(" y un ")" al final de la cadena $\Rightarrow$ por cada $i$ se generan $2*i$ cadenas $\Rightarrow$ en $n$ iteraciones se generan $2^n$ cadenas a esto se le debe adicionar el costo de verificar en cada iteración si cada una de estas cadenas es válida y es subsecuencia de $s$ y $t$ $\Rightarrow T(n)=2^n + n^2$ por lo tanto la complejidad total es $O(2^n)$.
+
+Al ser una solución lenta e ineficiente pero que siempre brinda todas las soluciones correctas y en las pruebas demora un menor tiempo que las planteadas anteriormente, nos apoyaremos en ella para probar la correctitud las soluciones de algoritmos más eficientes.
+
 #### Ejecución
 
 Para ejecutar el proyecto primeramente se debe ejecutar el siguiente comando `pip install -r requirements.txt` para instalar los módulos de Python necesarios para ejecutar el proyecto. 
