@@ -147,7 +147,3 @@ Luego para correr el test de las soluciones se corre el archivo `testing.py` al 
 - -m: para seleccionar el método a usar para resolver el problema entre una lista de posibles.
 
 
-
-
-<!-- Para resolver el problema se toma como base el algoritmo de Longest Common Subsequence (LCS) que es un algoritmo de programación dinámica que encuentra la subsecuencia más larga común entre dos cadenas. Este algoritmo se puede encontrar en la [Wikipedia](https://en.wikipedia.org/wiki/Longest_common_subsequence_problem) y en [GeeksforGeeks](https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/). -->
-
