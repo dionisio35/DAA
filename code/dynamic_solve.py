@@ -66,13 +66,13 @@ def is_subsequence(l: list, subl: list):
 def sol(dp: dict, s, t):
     for i in dp.values():
         if is_subsequence(i, s) and is_subsequence(i, t):
-            print('i', i)
             return balance(i)
     return balance(dp[(len(s)-1, len(t)-1)])
 
 
 def solve(s:list, t:list):
-
+    s= balance(s)
+    t= balance(t)
     ps= []
     l=''
     for i in s:
@@ -85,28 +85,44 @@ def solve(s:list, t:list):
         pt.append(l)
 
     dp= dict()
-    if s[0] == t[0]:
-        dp[(0, 0)] = s[0]
-    else:
-        dp[(0, 0)] = '()'
+    # if s[0] == t[0]:
+    #     dp[(0, 0)] = s[0]
+    # else:
+    #     dp[(0, 0)] = '()'
 
     for s_pos in range(len(s)):
         for t_pos in range(len(t)):
 
             # diagonal case
-            if s_pos + 1 < len(s) and t_pos + 1 < len(t) and s[s_pos + 1] == t[t_pos + 1]:
-                new= dp[(s_pos, t_pos)] + s[s_pos + 1]
-
-                if dp.get((s_pos + 1, t_pos + 1)) == None:
-                    dp[(s_pos + 1, t_pos + 1)]= new
+            if s_pos + 1 < len(s) and t_pos + 1 < len(t):
                 
-                else:
-                    current= dp[(s_pos+1, t_pos+1)]
-                    dp[(s_pos + 1, t_pos + 1)]= (
-                        new
-                        if new + balanced(new) <= len(current) + balanced(current)
-                        else current
-                    )
+                if s[s_pos + 1] == t[t_pos + 1]:
+                    new= dp[(s_pos, t_pos)] + s[s_pos + 1]
+
+                    if dp.get((s_pos + 1, t_pos + 1)) == None:
+                        dp[(s_pos + 1, t_pos + 1)]= new
+                    
+                    else:
+                        current= dp[(s_pos+1, t_pos+1)]
+                        dp[(s_pos + 1, t_pos + 1)]= (
+                            new
+                            if new + balanced(new) <= len(current) + balanced(current)
+                            else current
+                        )
+            
+                if s[s_pos + 1] != t[t_pos + 1]:
+                    new= dp[(s_pos, t_pos)] + '()'
+
+                    if dp.get((s_pos + 1, t_pos + 1)) == None:
+                        dp[(s_pos + 1, t_pos + 1)]= new
+                    
+                    else:
+                        current= dp[(s_pos+1, t_pos+1)]
+                        dp[(s_pos + 1, t_pos + 1)]= (
+                            new
+                            if new + balanced(new) <= len(current) + balanced(current)
+                            else current
+                        )
                                     
             # horizontal case
             if s_pos+1 < len(s):
@@ -146,9 +162,48 @@ def solve(s:list, t:list):
     
     # matrix(dp)
     
-    # return balance(dp[(len(s)-1, len(t)-1)])
-    return sol(dp, s, t)
+    return balance(dp[(len(s)-1, len(t)-1)])
+    # return sol(dp, s, t)
 
+
+
+
+
+def fast_solve(s, t):
+    dp= dict()
+
+    ps= []
+    l=''
+    for i in s:
+        l= l + i
+        ps.append(l)
+    pt= []
+    l=''
+    for i in t:
+        l= l + i
+        pt.append(l)
     
 
-# print(solve('))()', '(())'))
+    l=''
+    for i in range(len(s)):
+        
+        if i+1 < len(s) and is_subsequence(l, ps[i+1]):
+            l=l
+        else:
+            if s[i] == t[i]:
+                l= l + s[i]
+            else:
+                # if i+1 < len(s) and is_subsequence(l + '', ps[i+1]):
+                l= l + '()'
+        dp[i] = l
+
+        if is_subsequence(dp[i], s) and is_subsequence(dp[i], t):
+            print(dp)
+            return balance(dp[i])
+    print(dp)
+    return balance(dp[len(s)-1])
+
+
+
+
+# print(solve(')(()', ')()('))
