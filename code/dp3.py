@@ -1,8 +1,5 @@
-from first_solve import is_subsequence
-from brute_force import brute_force_algorithm
-from second_solve import solve
+from tools import *
 from dp import *
-
 
 
 def create_matrix(s,t,n,m):
@@ -87,47 +84,3 @@ def dp3(s,t,a="(",b=")"):
             dp[i][j] = get_better_chains(dp[i-1][j], dp[i][j-1],dp[0][j][0],dp[i][0][0],a,b)
     solutions = get_balanced_chains(dp[len(dp)-1][ len(dp[0])-1],a,b)
     return get_min(solutions)
-
-
-
-
-# s="(()("
-# t= ")))"
-
-# s=")((()(("      
-# t="))(((((()"
-
-# s="()((" 
-# t="())("
-
-
-# s="())("
-# t=")((("
-
-# s="(()("
-# t=")((("
-
-
-# s="()())" 
-# t="(()))"
-
-# s="())((" 
-# t=")()))"
-
-
-
-# from time import time
-
-# t1=time()
-# a=dp3(s,t)
-# t2=time()
-# b=brute_force_algorithm(s,t)
-# t="(()))"
-# t3=time()
-# c=solve(s,t)
-# t4=time()
-
-# print("dp3",a,len(a),t2-t1)
-# print("brute_force_algorithm",b,len(b[0]),t3-t2)
-# print("solve",c,len(c[0]),t4-t3)
-

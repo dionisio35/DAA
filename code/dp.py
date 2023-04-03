@@ -1,6 +1,5 @@
-from first_solve import is_subsequence
-from brute_force import brute_force_algorithm
-from second_solve import solve
+from tools import *
+import numpy as np
 
 def create_matrix(s,t,n,m):
     dp= [["" for j in range(m+1)] for i in range(n+1) ]
@@ -80,7 +79,6 @@ def get_better_chain(ct,cs,t,s,a,b):
     return min_sequence(possibles_sequences,a,b) 
 
 
-import numpy as np
 
 def spies_dp(s,t,a="(",b=")"):
     n=len(s)
@@ -91,42 +89,3 @@ def spies_dp(s,t,a="(",b=")"):
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
     print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
-            
-
-
-
-# s="(()("
-# t= ")))"
-
-# s=")((()(("      
-# t="))(((((()"
-
-# s="()((" 
-# t="())("
-
-
-# s="())("
-# t=")((("
-
-# s="(()("
-# t=")((("
-
-
-# s="()())" 
-# t="(()))"
-
-
-# from time import time
-
-# t1=time()
-# a=spies_dp(s,t)
-# t2=time()
-# b=brute_force_algorithm(s,t)
-# t3=time()
-# c=solve(s,t)
-# t4=time()
-
-# print("spies_dp",a,len(a),t2-t1)
-# print("brute_force_algorithm",b,len(b[0]),t3-t2)
-# print("solve",c,len(c[0]),t4-t3)
-

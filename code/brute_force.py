@@ -1,7 +1,4 @@
-#idea de generar todas las cadenas de tamanno de la mayor de las secuencias a el doble de la suma de varios tamannos 
-#y quedarse con las de menor tamanno 
-
-from first_solve import *
+from tools import *
 
 def generate_all_balanced_len_n(n, mem):
     """generate all the sequences balanced of lenth n"""
@@ -26,18 +23,3 @@ def brute_force_algorithm(s:str, t:str):
         solutions_n=solved(mem[i], s, t)
         if(len(solutions_n)):
             return solutions_n
-
-# s="())("
-# t=")((("
-
-
-# s="(()("
-# t=")((("
-
-
-
-# s="()())" 
-# t="(()))"
-
-# a=brute_force_algorithm(s,t)
-# print(a,len(a))
