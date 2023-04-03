@@ -65,6 +65,16 @@ En un segundo intento tenemos en el archivo `second_solve.py` en el cual se usa 
 
 Este se ejecuta igualmente con una complejidad temporal de $O(2^n)$, pero con un tiempo de ejecución más bajo debido a las podas en el árbol de búsqueda.
 
+#### Ejecución
+
+Para ejecutar el proyecto primeramente se debe ejecutar el siguiente comando `pip install -r requirements.txt` para instalar los módulos de Python necesarios para ejecutar el proyecto. 
+
+Luego para correr el test de las soluciones se corre el archivo `testing.py` al cual se le puede hacer `python testing.py -h` y este muestra todas las opciones posibles de prueba, como es el caso de:
+- -s: para colocar una semilla para la generación de las cadenas aleatorias.
+- -t: para colocar la cantidad de pruebas que se quieren hacer.
+- -l: para colocar el tamaño fijo de las cadenas aleatorias.
+- -r: para colocar el rango de tamaño de las cadenas aleatorias.
+- -m: para seleccionar el método a usar para resolver el problema entre una lista de posibles.
 
 
 
