@@ -71,8 +71,6 @@ def sol(dp: dict, s, t):
 
 
 def solve(s:list, t:list):
-    s= balance(s)
-    t= balance(t)
     ps= []
     l=''
     for i in s:
@@ -161,7 +159,6 @@ def solve(s:list, t:list):
                         )
     
     # matrix(dp)
-    
     return balance(dp[(len(s)-1, len(t)-1)])
     # return sol(dp, s, t)
 
