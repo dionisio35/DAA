@@ -2,7 +2,8 @@ from tools import *
 import numpy as np
 
 def create_matrix(s,t,n,m):
-    dp= [["" for j in range(m+1)] for i in range(n+1) ]
+    dp= [["" for j in range(m+1)] for i in range(n+1)]
+    print(dp)
     for i in range(1,len(dp)):
         dp[i][0]=s[0:i]
     for i in range(1,len(dp[0])):
