@@ -10,32 +10,13 @@ def create_matrix(s,t,n,m):
         dp[0][i]=[t[0:i]]
     return dp
 
-
-def get_balanced_chains(input,a,b):
-    result :set = set()
-    for l in input:
-        balance=0
-        balanced=""
-        for i in l:
-            if(i==a):
-                balanced+=i
-                balance+=1
-            else:
-                if balance:
-                    balance-=1
-                    balanced+=i
-                else:   
-                    balanced+= a+i
-        balanced += balance*b
-        result.add(balanced)
-    return list(result)
-
-
+            
 def filter_solutions(possibles_sequences):    
     m=10e31
     sequences:set=set()
     for i in possibles_sequences:
-        mi=len(i)
+        ni=get_n_to_balanced(i,"(",")")
+        mi=len(i)+ni[0]+ni[1]
         if mi < m:
             sequences=set()
             sequences.add(i)

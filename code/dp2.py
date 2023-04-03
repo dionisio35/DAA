@@ -11,24 +11,24 @@ def create_matrix(s,t,n,m):
     return dp
 
 
-def get_balanced_chains(input,a,b):
-    result :set = set()
-    for l in input:
-        balance=0
-        balanced=""
-        for i in l:
-            if(i==a):
-                balanced+=i
-                balance+=1
-            else:
-                if balance:
-                    balance-=1
-                    balanced+=i
-                else:   
-                    balanced+= a+i
-        balanced += balance*b
-        result.add(balanced)
-    return list(result)
+# def get_balanced_chains(input,a,b):
+#     result :set = set()
+#     for l in input:
+#         balance=0
+#         balanced=""
+#         for i in l:
+#             if(i==a):
+#                 balanced+=i
+#                 balance+=1
+#             else:
+#                 if balance:
+#                     balance-=1
+#                     balanced+=i
+#                 else:   
+#                     balanced+= a+i
+#         balanced += balance*b
+#         result.add(balanced)
+#     return list(result)
 
 
 def filter(seq,n,m,a,b):
@@ -53,8 +53,6 @@ def get_better_chains(ct,cs,t,s,a,b):
         possibles_sequences.add(cti + s[len(s)-1])
     return filter(possibles_sequences,len(s),len(t),a,b)
 
-
-
 def get_min(sol): 
     min=10e31
     solution=""
@@ -63,7 +61,6 @@ def get_min(sol):
             min=len(i)
             solution=i
     return solution
-
 
 
 def dp2(s,t,a="(",b=")"):

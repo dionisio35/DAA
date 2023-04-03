@@ -11,18 +11,18 @@ def create_matrix(s,t,n,m):
     return dp
 
 
-def get_n_to_balanced(s,a,b):
-    neq=0
-    pos=0
-    for i in s:
-        if(i==a):
-            pos+=1
-        else: 
-            if(pos):
-                pos-=1
-            else:
-                neq+=1
-    return pos,neq
+# def get_n_to_balanced(s,a,b):
+#     neq=0
+#     pos=0
+#     for i in s:
+#         if(i==a):
+#             pos+=1
+#         else: 
+#             if(pos):
+#                 pos-=1
+#             else:
+#                 neq+=1
+#     return pos,neq
             
 
 def get_balance(l,a,b):    
