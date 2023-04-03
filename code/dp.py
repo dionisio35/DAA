@@ -115,7 +115,7 @@ def spies_dp(s,t,a="(",b=")"):
             # if(i==3 and j==4):
                 # print("here")
             dp[i][j] = get_better_chain(dp[i-1][j], dp[i][j-1],dp[0][j],dp[i][0],a,b)
-    # print(np.array(dp))      
+    print(np.array(dp))      
     return get_balance(dp[len(dp)-1][ len(dp[0])-1],a,b)
             
 
