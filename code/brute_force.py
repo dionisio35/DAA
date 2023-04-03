@@ -16,7 +16,7 @@ def generate_all_balanced_len_n(n, mem):
     n_list=[]
     for c in mem[n-1]:
         n_list.append(c + "(")
-        if get_balance(c + "(") > 0:
+        if get_balance(c) > 0:
             n_list.append(c + ")")
     return n_list
 
@@ -30,10 +30,12 @@ def solved(elems, s, t):
 def brute_force_algorithm(s:str, t:str):
     """generate all solutions"""
     mem=[[""]]
+    min=max(len(s),len(t))
     for i in range(1, 2*(len(s) + len(t))):
         mem.append(generate_all_balanced_len_n(i, mem))
-        solutions_n=solved(mem[i], s, t)
-        if(len(solutions_n)):
-            return solutions_n
+        if len(mem[i][0]) >= min:
+            solutions_n=solved(mem[i], s, t)
+            if(len(solutions_n)):
+                return solutions_n
 
 
