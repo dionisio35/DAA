@@ -83,10 +83,10 @@ def solve(s:list, t:list):
         pt.append(l)
 
     dp= dict()
-    # if s[0] == t[0]:
-    #     dp[(0, 0)] = s[0]
-    # else:
-    #     dp[(0, 0)] = '()'
+    if s[0] == t[0]:
+        dp[(0, 0)] = s[0]
+    else:
+        dp[(0, 0)] = '()'
 
     for s_pos in range(len(s)):
         for t_pos in range(len(t)):
@@ -104,7 +104,7 @@ def solve(s:list, t:list):
                         current= dp[(s_pos+1, t_pos+1)]
                         dp[(s_pos + 1, t_pos + 1)]= (
                             new
-                            if new + balanced(new) <= len(current) + balanced(current)
+                            if len(new) + balanced(new) <= len(current) + balanced(current)
                             else current
                         )
             
@@ -118,7 +118,7 @@ def solve(s:list, t:list):
                         current= dp[(s_pos+1, t_pos+1)]
                         dp[(s_pos + 1, t_pos + 1)]= (
                             new
-                            if new + balanced(new) <= len(current) + balanced(current)
+                            if len(new) + balanced(new) <= len(current) + balanced(current)
                             else current
                         )
                                     
@@ -158,7 +158,7 @@ def solve(s:list, t:list):
                             else current
                         )
     
-    # matrix(dp)
+    matrix(dp)
     return balance(dp[(len(s)-1, len(t)-1)])
     # return sol(dp, s, t)
 
