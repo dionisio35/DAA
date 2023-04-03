@@ -5,14 +5,14 @@ def solve(s:list, t:list):
     l= ['']
     while l:
         temp= l.pop()
-        if is_subsequence(temp, s) and is_subsequence(temp, t) and raw_balance(temp) == 0:
+        if is_subsequence(temp, s) and is_subsequence(temp, t) and is_balanced(temp) == 0:
             sol.append(temp)
         
         if len(temp) <= 2*len(s+t) -1:
             if (temp + '(').count('(') <= (len(s+t) + 1)/2:
                 l.append(temp + '(')
 
-            if raw_balance(temp + ')') >= 0:
+            if is_balanced(temp + ')') >= 0:
                 l.append(temp + ')')
     
     s= sol[0]

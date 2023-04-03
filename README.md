@@ -58,10 +58,14 @@ En un principio la primera idea que se nos ocurre para resolver el problema es h
 
 - Cuando una cadena cumple con las condiciones de `is_valid` y `is_subsequence`(de s y de t), se agrega a una lista de soluciones de la cual al final del proceso nos vamos a quedar con todas las soluciones de menor tamaño.
 
-- A pesar de generar correctamente todas las posibles soluciones, este algoritmo es muy ineficiente ya que tiene una complejidad de O(2^n) donde n es el tamaño de la suma de las cadenas *s* y *t*. Por tanto, nos apoyaremos en este para probar algoritmos más eficientes.
+- A pesar de generar correctamente todas las posibles soluciones, este algoritmo es muy ineficiente ya que explora todo el árbol de soluciones hasta $2*(s+t)$, teniendo una complejidad de $O(2^n)$ donde n es el tamaño de la suma de las cadenas *s* y *t*. Por tanto, nos apoyaremos en este para probar algoritmos más eficientes.
 
 
-En un segundo intento tenemos en el archivo `second_solve.py` en el cual se usa el mismo algoritmo de `first_solve.py`
+En un segundo intento tenemos en el archivo `second_solve.py` en el cual se usa el mismo algoritmo de `first_solve.py` pero haciéndole algunas podas para reducir el tiempo de ejecución. Una primera poda es que si al verificar el factor de balance con el método `is_balanced`(el cual retorna el factor de balance de la cadena, y para el caso de llegar a ser en algún momento menor que cero se retorna $-1$) tenemos que se descartan todos los casos en que se tenga un factor de balance menor que cero pues esto indica que existe un ")" que no tiene un "(" correspondiente y por lo tanto no es una cadena válida y nunca va a poder ser válida. Además, se agrega una segunda poda que es que si la cadena que se está generando tiene una cantidad de "(" mayor o igual que $s+t +1$ entonces se descarta la posibilidad de que aparezca una solución válida pues harían falta $s+t +1$ de ")" para que se balancee la cadena y esto exedería el tamaño máximo de la cadena planteado anteriormente de $2*(s+t)$. Como ya se había comprobado anteriormente que este método genera todas las soluciones posibles, se puede decir que este también las genera pues solo se descartan ramas que no nos llevan a soluciones válidas.
+
+Este se ejecuta igualmente con una complejidad temporal de $O(2^n)$, pero con un tiempo de ejecución más bajo debido a las podas en el árbol de búsqueda.
+
+
 
 
 

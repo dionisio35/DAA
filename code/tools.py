@@ -20,7 +20,7 @@ def is_valid(l: list):
             n-=1
     return n == 0
 
-def raw_balance(l: list):
+def is_balanced(l: list):
     n= 0
     if not l:
         return -1
