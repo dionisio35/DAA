@@ -1,8 +1,11 @@
 from random import randint
+import random
 
-def generate_n(n:int, min:int, max:int, a="(", b=")"):
+def generate_n(n:int, min:int, max:int, a="(", b=")", seed=None):
     cases=[]
-
+    if seed:
+        random.seed(seed)
+    
     for _ in range(n):
         len1 = randint(min, max)
         len2 = randint(min, max)

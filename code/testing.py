@@ -1,14 +1,13 @@
 from generator import generate_n
 
 from brute_force import brute_force_algorithm
-from dp import spies_dp
-from dynamic_solve import solve, fast_solve
+from dynamic_solve import solve
+from dp2 import dp2
 
-import sys
 from time import time
 from colorama import init, Fore
-from dp import spies_dp
-from dp2 import dp2
+import argparse
+from argparse import Namespace
 
 
 def same_solution(s1, s2):
@@ -27,9 +26,12 @@ def error(solution, s1, s2, solutions):
     print('===================================')
 
 
-def test(method, times:int, min_len:int, max_len:int):
+def test(method, times:int, min_len:int, max_len:int, seed:int=None):
     init()
-    generated_cases = generate_n(times, min_len, max_len)
+    if seed:
+        generated_cases = generate_n(times, min_len, max_len, seed=seed)
+    else:
+        generated_cases = generate_n(times, min_len, max_len)
     
     count_errors=0
     time_bf=0
@@ -65,28 +67,25 @@ def test(method, times:int, min_len:int, max_len:int):
     else:
         print(Fore.RED + 'FAILED(failures={})'.format(count_errors), Fore.RESET)
     print()
-    
-import argparse
 
 if __name__ == '__main__':
-    times = int(sys.argv[1])
-    try:
-        min = int(sys.argv[2])
-        max = int(sys.argv[3])
-        # test(spies_dp, times, min, max)
-        test(solve, times, min, max)
+    parser = argparse.ArgumentParser("Spies")
+    parser.add_argument('-m', help="Method to test", type=str, default='dp2', choices=['solve', 'dp2'])
+    parser.add_argument('-l', help="Max string", type=int)
+    parser.add_argument('-r', help="Min and max range of string", type=int, nargs=2)
+    parser.add_argument('-s', help="Seed", type=int, default=None)
+    parser.add_argument('-t', help="Times to run", type=int, default=1)
+    args: Namespace = parser.parse_args()
 
-    except IndexError:
-        n = int(sys.argv[2])
-        # test(spies_dp, times, n, n)
-        test(solve, times, n, n)
+    if args.m == 'solve':
+        method = solve
+    elif args.m == 'dp2':
+        method = dp2
+    
 
-    #     test(solve, times, min, max)
-    # except IndexError:
-    #     n = int(sys.argv[2])
-    #     test(solve, times, n, n)
-
-    # parser = argparse.ArgumentParser("simple_example")
-    # parser.add_argument("counter", help="An integer will be increased by 1 and printed.", type=int)
-    # args = parser.parse_args()
-    # print(args.counter + 1)
+    if args.l:
+        test(method, args.t, args.l, args.l, args.s)
+    elif args.r:
+        test(method, args.t, args.r[0], args.r[1], args.s)
+    else:
+        test(method, args.t, 1, 10, args.s)
