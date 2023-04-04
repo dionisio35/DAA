@@ -79,7 +79,7 @@ Al ser una solución lenta e ineficiente pero que siempre brinda todas las soluc
 
 
 
-##### Solucion dinamica 1
+##### Solucion dinámica 1
 Una de las primeras soluciones que ideamos para atacar el problema es la siguiente:
 - Crear una matriz $dp$ de tamaño $n+1 \times m+1$ donde $n$ y $m$ son los tamaños de las cadenas $s$ y $t$ respectivamente.
 - Llenar la primera fila y la primera columna con las subcadenas del tamaño del índice de la fila o columna respectivamente de la cadena $s$ y $t$.
@@ -113,7 +113,9 @@ Como se puede ver esta función tiene de costo $nm$ al recorrer cada una de las 
 
 Este algoritmo es bastante más eficiente que lo que se tenía hasta el momento pero no siempre da la cadena mínima, para muy pocos casos da cadenas erroneas porque no se garantiza que partiendo de un óptimo de $s[i]$ y $t[j]$ se pueda llegar a un optimo de $s$ y $t$.
 
-###### Contraejemplo que demuestra que partiendo de una solucion optima de $s[0:i]$ y $t[0:j]$ no siempre se llega a una solucion óptima de $s$ y $t$.
+
+
+##### Contraejemplo que demuestra que partiendo de una solucion optima de $s[0:i]$ y $t[0:j]$ no siempre se llega a una solucion óptima de $s$ y $t$.
 Se tienen las cadenas:
 $s=$ "()())" 
 $t=$ "(()))"
@@ -124,6 +126,14 @@ Donde $s_{i}$ es prefijo de $s$ y $t_{j}$ es prefijo de $t$.
 Una solución óptima de nuestro problema para las cadenas $s_{i}$ y la solución que da "dinamica 1"(método del que hablamos anteriormente) es "(())()()" apoyandose en la cadena anterior, pero la solución correcta para $s$ y $t$ es "(()())" $\Rightarrow$ No se puede garantizar que partiendo de una solución óptima de $s[0:i]$ y $t[0:j]$ se pueda llegar a una solucion optima de $s$ y $t$.
 
 
+
+##### Solucion dinámica 2
+
+Para solucionar los problemas del algoritmo anterior se propone un ajuste a esta solución en el cual en cada espacio de la matriz en lugar de estar guardando una cadena óptima, se van a estar guardando todas las cadenas generadas de la misma forma que el algoritmo anterior que tengan a $s[0:i]$ y $t[0:j]$ como subsecuencias. Cuando ya la matriz está completa se balancean todas las cadenas y se elige de todas la menor.
+
+Esto está garantizado, es una solución correcta de nuestro problema porque basicamente lo que hace es buscar todas las posibles cadenas que cumplan [2] y [3] en cada caso y de generar la siguiente cadena a partir de las posibles soluciones anteriores, por lo que se garantiza que se llega a una solución óptima.
+
+Su complejidad es bastante cercana a la del caso inicial de fuerza bruta pero con la ventaja de que no se generan cadenas que no cumplen con [2] y [3]. Si el algoritmo anterior tiene complejidad $O(nm max(m,n))$ este tiene por cada espacio de la matriz busca por todas las cadenas que se guardan y a partir de estas genera la siguiente posicion por lo que la complejidad temporal de esta parte es exponencial por lo que es mucho mayor que $O(nm max(m,n))$ lo que implica que el algoritmo aunque eficaz es muy lento e ineficiente.
 
 ### Ejecución
 
