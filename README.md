@@ -1,8 +1,11 @@
-# DAA
- 
-## Los Espías
+# Proyecto 1 de DAA: Los Espías
 
-#### Problema
+### Equipo: <team_name>
+- Lauren Guerra Hernández C-412
+- Dennis Fiallo Muñoz C-411
+
+
+### Problema
 Durante la segunda guerra mundial una parte importante de la información era transmitida en cartas encriptadas en buzones públicos que eran depositadas en estos por espias. Funcionaba de la siguiente manera:
 
 * En la ciudad solo había un buzón usado para temas militares que era compartido para todas estas operaciones.
@@ -23,7 +26,7 @@ Usted es un mediador de paz, por tanto su tarea es construir una lista de órden
 
 
 
-#### Solución 
+### Solución 
 
 La interpretación del problema es la siguiente tenemos dos string $s$ y $t$, conformados únicamente por los caracteres: *e* y *r*. De estos se quiere buscar un algoritmo que dados cualquier $s$ y cualquier $t$ encuentre la menor cadena que contenga como subsecuencias a $s*$ y a $t$ y que además sea una cadena de "paréntesis balanceados". Para facilitar el trabajo y entendimiento del problema se toma a *e* como *"("* y a *r* como *")"*.
 
@@ -46,8 +49,8 @@ Para balancear $q$ se busca su factor de desbalance, para tener la cantidad de  
 
 Apoyándonos en que siempre existe una cadena $q$ que cumple con 1, 2, 3 el objetivo es buscar la cadena de menor longitud posible.
 
-#### Soluciones
 
+##### Primera solución
 En un principio la primera idea que se nos ocurre para resolver el problema es hacer un backtracking que recorra todas las posibles combinaciones de *"("* y *")"* y que encuentre la cadena que cumpla con las condiciones del problema. Para esto se tiene en el archivo `first_solve.py` el método `solve` el cual hace lo siguiente:
 
 - Cuenta con dos métodos auxiliares: `is_valid` y `is_subsequence` que verifican si una cadena es válida y si es subsecuencia respectivamente(esto aparece en el archivo `tools.py` siendo usados por otras soluciones, junto con otro conjunto de herramientas que ahí aparecen).
@@ -60,10 +63,13 @@ En un principio la primera idea que se nos ocurre para resolver el problema es h
 
 - A pesar de generar correctamente todas las posibles soluciones, este algoritmo es muy ineficiente ya que explora todo el árbol de soluciones hasta $2*(s+t)$, teniendo una complejidad de $O(2^n)$ donde n es el tamaño de la suma de las cadenas *s* y *t*. Por tanto, nos apoyaremos en este para probar algoritmos más eficientes.
 
+##### Segunda solución
 
 En un segundo intento tenemos en el archivo `second_solve.py` en el cual se usa el mismo algoritmo de `first_solve.py` pero haciéndole algunas podas para reducir el tiempo de ejecución. Una primera poda es que si al verificar el factor de balance con el método `is_balanced`(el cual retorna el factor de balance de la cadena, y para el caso de llegar a ser en algún momento menor que cero se retorna $-1$) tenemos que se descartan todos los casos en que se tenga un factor de balance menor que cero pues esto indica que existe un ")" que no tiene un "(" correspondiente y por lo tanto no es una cadena válida y nunca va a poder ser válida. Además, se agrega una segunda poda que es que si la cadena que se está generando tiene una cantidad de "(" mayor o igual que $s+t +1$ entonces se descarta la posibilidad de que aparezca una solución válida pues harían falta $s+t +1$ de ")" para que se balancee la cadena y esto exedería el tamaño máximo de la cadena planteado anteriormente de $2*(s+t)$. Como ya se había comprobado anteriormente que este método genera todas las soluciones posibles, se puede decir que este también las genera pues solo se descartan ramas que no nos llevan a soluciones válidas.
 
 Este se ejecuta igualmente con una complejidad temporal de $O(2^n)$, pero con un tiempo de ejecución más bajo debido a las podas en el árbol de búsqueda.
+
+##### Fuerza bruta
 
 Como tercer interto tenemos el algoritmo que se encuentra en `brute_force.py` es un algoritmo de fuerza bruta que en cada iteración genera para toda $i$ comprendida entre $1$ y $2*(n+m)$ todas las posibles cadenas de longitud $i$ y verifica si entre ellas existe una o varias que cumplan [1], [2] y [3], en este caso se retornan todas las estas cadenas de tamaño $i$ mínimo. Siempre devuelve todas las soluciones de tamaño mínimo porque genera y comprueba las cadenas de forma creciente, nunca va a buscar soluciones de tamaño $i+1$ si no verificó todas las de tamanno $i$.
 
@@ -71,7 +77,55 @@ Su complejidad es $O(2^n)$ donde n es el tamaño de las soluciones encontradas, 
 
 Al ser una solución lenta e ineficiente pero que siempre brinda todas las soluciones correctas y en las pruebas demora un menor tiempo que las planteadas anteriormente, nos apoyaremos en ella para probar la correctitud las soluciones de algoritmos más eficientes.
 
-#### Ejecución
+
+
+##### Solucion dinamica 1
+Una de las primeras soluciones que ideamos para atacar el problema es la siguiente:
+- Crear una matriz $dp$ de tamaño $n+1 \times m+1$ donde $n$ y $m$ son los tamaños de las cadenas $s$ y $t$ respectivamente.
+- Llenar la primera fila y la primera columna con las subcadenas del tamaño del índice de la fila o columna respectivamente de la cadena $s$ y $t$.
+
+- Ej: si $s =$ ")(()" y $t =$ "())))" entonces la matriz queda de la siguiente forma:
+
+
+$$
+\begin{pmatrix}
+'' & '(' & '()' & '())' & '()))' & '())))'\\
+ ')' &''& ''& ''& '' &''\\
+ ')(' &'' &'' &'' &'' &''\\
+ ')((' &'' &'' &''& ''& ''\\
+ ')(()' &'' &'' &'' &'' &''
+\end{pmatrix}
+$$
+
+En cada posición $i,j$ de la matriz para $i \in [1,n]$ y  $j \in [1,m]$ se va a guardar la menor cadena que cumpla que $s[0:i]$ y $t[0:j]$ son subsecuencias de esta.
+
+
+Esta cadena está construida a partir de las cadenas que se encuentra en las posiciones $[i-1][j]$ y $[i][j-1]$ de la matriz, de la siguiente forma:
+
+- Se comprueba si la cadena en la posicion $[i-1][j]$ cumple que $t[0:j]$ es subsecuenncia de esta, en este caso se guarda como posible cadena seleccionada.
+- Igualmente se comprueba que la cadena en la posición $[i][j-1]$ cumple que $s[0:i]$ es subsecuenncia de esta, en este caso se guarda como posible cadena seleccionada.
+- Luego se guardan para ser seleccionadas las cadenas $dp[i-1][j]+t[j]$  y $dp[i][j-1]+s[i]$ ya que ambas cumplen que $s[0:i]$ y $t[0:j]$ son subsecuenncias de esta. Porque si $a$ es subsecuencia de $b =>a+c$ es subsecuencia de $b+c$.
+- Teniendo las cadenas guardadas anteriormente se selecciona la o una de las que cumpla que la suma de la cantidad de paréntesis a agregarle para balancearla con su tamaño sea mínima.
+
+Cuando la $dp$ esté completa se retorna la cadena que se encuentra en la posición $[n+1][m+1]$ de la matriz.
+
+Como se puede ver esta función tiene de costo $nm$ al recorrer cada una de las posiciones de la matriz, además del costo de buscar las posibles soluciones a seleccionar y de estos buscar la mejor teniendo un costo todos estos procesos  $\leq$ max(n,m)   =>*T(n,m)=nm max(m,n)* => *O(nm max(m,n))*.
+
+Este algoritmo es bastante más eficiente que lo que se tenía hasta el momento pero no siempre da la cadena mínima, para muy pocos casos da cadenas erroneas porque no se garantiza que partiendo de un óptimo de $s[i]$ y $t[j]$ se pueda llegar a un optimo de $s$ y $t$.
+
+###### Contraejemplo que demuestra que partiendo de una solucion optima de $s[0:i]$ y $t[0:j]$ no siempre se llega a una solucion óptima de $s$ y $t$.
+Se tienen las cadenas:
+$s=$ "()())" 
+$t=$ "(()))"
+$s_{i}=$ "()()"
+$t_{j}= $"(())"
+
+Donde $s_{i}$ es prefijo de $s$ y $t_{j}$ es prefijo de $t$.
+Una solución óptima de nuestro problema para las cadenas $s_{i}$ y la solución que da "dinamica 1"(método del que hablamos anteriormente) es "(())()()" apoyandose en la cadena anterior, pero la solución correcta para $s$ y $t$ es "(()())" $\Rightarrow$ No se puede garantizar que partiendo de una solución óptima de $s[0:i]$ y $t[0:j]$ se pueda llegar a una solucion optima de $s$ y $t$.
+
+
+
+### Ejecución
 
 Para ejecutar el proyecto primeramente se debe ejecutar el siguiente comando `pip install -r requirements.txt` para instalar los módulos de Python necesarios para ejecutar el proyecto. 
 
