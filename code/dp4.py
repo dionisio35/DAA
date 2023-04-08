@@ -28,25 +28,39 @@ def dp4(s,t,a="(",b=")"):
             else:            
                 dp[i+1].add(k+s[i]+t[i])
                 dp[i+1].add(k+t[i]+s[i])
-        print(i+1,dp[i+1])
+            for w in get_balanced_chains(list(dp[i+1]),a,b):
+                dp[i+1].add(w)
+            dp[i+1]=filter(dp[i+1],len(s),len(t),a,b)
+        # print(i+1,dp[i+1])
     solutions = get_balanced_chains(dp[n],a,b)
     return get_min(solutions)
 
+def filter(seq,n,m,a,b):
+    result=set()
+    for i in seq:
+        ni=get_n_to_balanced(i,a,b)
+        if ni[0]+ni[1]+len(i)<=2*(n+m):
+            result.add(i)
+    return result
 
     
 s="())("
 t=")((("
 
-# s="(()("
-# t=")((("
+s="(()("
+t=")((("
 
 
 # s="()())" 
 # t="(()))"
 
 
-s="()(("
-t= "))()"
+# s="()(("
+# t= "))()"
+
+s=")()()))" 
+t="(())))("
+
 
 
 from time import time

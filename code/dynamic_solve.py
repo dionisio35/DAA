@@ -64,7 +64,7 @@ def is_subsequence(l: list, subl: list):
 
 
 def sol(dp: dict, s, t):
-    for i in dp.values():
+    for i in dp:
         if is_subsequence(i, s) and is_subsequence(i, t):
             return balance(i)
     return balance(dp[(len(s)-1, len(t)-1)])
@@ -124,7 +124,7 @@ def solve(s:list, t:list):
                                     
             # horizontal case
             if s_pos+1 < len(s):
-                if is_subsequence(dp[(s_pos, t_pos)], ps[s_pos+1]):
+                if is_subsequence(dp[(s_pos, t_pos)], ps[s_pos+1]) and is_subsequence(dp[(s_pos, t_pos)], pt[t_pos]):
                     new= dp[(s_pos, t_pos)]
                 else:
                     new= dp[(s_pos, t_pos)] + s[s_pos + 1]
@@ -142,7 +142,7 @@ def solve(s:list, t:list):
             
             # vertical case
             if t_pos+1 < len(t):
-                if is_subsequence(dp[(s_pos, t_pos)], pt[t_pos+1]):
+                if is_subsequence(dp[(s_pos, t_pos)], pt[t_pos+1]) and is_subsequence(dp[(s_pos, t_pos)], ps[s_pos]):
                     new= dp[(s_pos, t_pos)]
                 else:
                     new= dp[(s_pos, t_pos)] + t[t_pos + 1]
@@ -180,7 +180,6 @@ def fast_solve(s, t):
         l= l + i
         pt.append(l)
     
-
     l=''
     for i in range(len(s)):
         
@@ -190,8 +189,10 @@ def fast_solve(s, t):
             if s[i] == t[i]:
                 l= l + s[i]
             else:
-                # if i+1 < len(s) and is_subsequence(l + '', ps[i+1]):
-                l= l + '()'
+                if i+1 < len(s) and s[i+1] != t[i+1]:
+                    l = l + ')('
+                else:
+                    l= l + '()'
         dp[i] = l
 
         if is_subsequence(dp[i], s) and is_subsequence(dp[i], t):
@@ -202,5 +203,104 @@ def fast_solve(s, t):
 
 
 
+def fast_bf(s, t):
+    dp= {0: ['']}
+    for i in range(len(s)):
+        dp[i+1] = []
+        for l in dp[i]:
 
-# print(solve(')(()', ')()('))
+            if i+1 < len(s) and is_subsequence(l, s[:i+1]) and is_subsequence(l, t[:i+1]):
+                dp[i+1].append(l)
+            
+            elif s[i] == t[i]:
+                dp[i+1].append(l + s[i])
+            
+            else:
+                if i+1 < len(s) and is_subsequence(l+'(', t[:i+2]) and is_subsequence(l+'(', s[:i+2]):
+                    dp[i+1].append(l + '(')
+                elif i+1 < len(s) and is_subsequence(l + ')', t[:i+2]) and is_subsequence(l+'(', s[:i+2]):
+                    dp[i+1].append(l + ')')
+                else:
+                    dp[i+1].append(l + '()')
+                    dp[i+1].append(l + ')(')
+
+    print(dp)
+    print(dp[(len(s))])
+    
+    l=[dp[(len(s))][0]]
+    for i in dp[(len(s))]:
+        if len(l[0]) + balanced(l[0]) > len(i) + balanced(i):
+            l = [i]
+        elif len(l[0]) + balanced(l[0]) == len(i) + balanced(i):
+            l.append(i)
+    return [balance(x) for x in l][0]
+
+
+
+def solve_fast(s:list, t:list):
+    dp= dict()
+    if s[0] == t[0]:
+        dp[(0, 0)] = [s[0]]
+    else:
+        dp[(0, 0)] = set()
+        dp[(0, 0)].add('()')
+        dp[(0, 0)].add(')(')
+
+
+    for s_pos in range(len(s)):
+        for t_pos in range(len(t)):
+            for l in dp[(s_pos, t_pos)]:
+
+                if dp.get((s_pos + 1, t_pos + 1)) == None:
+                    dp[(s_pos + 1, t_pos + 1)]= set()
+                if dp.get((s_pos + 1, t_pos)) == None:
+                    dp[(s_pos + 1, t_pos)]= set()
+                if dp.get((s_pos, t_pos + 1)) == None:
+                    dp[(s_pos, t_pos + 1)]= set()
+                
+                # diagonal case
+                if s_pos + 1 < len(s) and t_pos + 1 < len(t):
+                    
+                    if s[s_pos + 1] == t[t_pos + 1]:
+                        dp[(s_pos + 1, t_pos + 1)].add(l + s[s_pos + 1])
+
+                    else:
+                        if is_subsequence(l + '(', t[:t_pos+2]) and is_subsequence(l + '(', s[:s_pos+2]):
+                            dp[(s_pos + 1, t_pos + 1)].add(l + '(')
+                        elif is_subsequence(l + ')', t[:t_pos+2]) and is_subsequence(l + ')', s[:s_pos+2]):
+                            dp[(s_pos + 1, t_pos + 1)].add(l + ')')
+                        elif is_subsequence(l + ')(', t[:t_pos+2]) and is_subsequence(l + ')(', s[:s_pos+2]):
+                            dp[(s_pos + 1, t_pos + 1)].add(l + ')(')
+                        else:
+                            dp[(s_pos + 1, t_pos + 1)].add(l + '()')
+                            dp[(s_pos + 1, t_pos + 1)].add(l + '(')
+                            dp[(s_pos + 1, t_pos + 1)].add(l + ')')
+                            dp[(s_pos + 1, t_pos + 1)].add(l + ')(')
+                                        
+                # horizontal case
+                if s_pos+1 < len(s):
+                    if is_subsequence(l, s[:s_pos+2]) and is_subsequence(l, t[:t_pos+1]):
+                        dp[(s_pos+1, t_pos)].add(l)
+                        dp[(s_pos+1, t_pos)].add(l + s[s_pos + 1])
+                    else:
+                        dp[(s_pos+1, t_pos)].add(l + s[s_pos + 1])
+                
+                # vertical case
+                if t_pos+1 < len(t):
+                    if is_subsequence(l, t[:t_pos+2]) and is_subsequence(l, s[:s_pos+1]):
+                        dp[(s_pos, t_pos + 1)].add(l)
+                        dp[(s_pos, t_pos + 1)].add(l + t[t_pos + 1])
+                    else:
+                        dp[(s_pos, t_pos + 1)].add(l + t[t_pos + 1])
+    
+    l=[dp[(len(s)-1, len(t)-1)].pop()]
+    for i in dp[(len(s)-1, len(t)-1)]:
+        if len(l[0]) + balanced(l[0]) > len(i) + balanced(i):
+            l = [i]
+        elif len(l[0]) + balanced(l[0]) == len(i) + balanced(i):
+            l.append(i)
+    return [balance(x) for x in l][0]
+    
+
+
+# print(solve_fast('(())((', '))(())'))
