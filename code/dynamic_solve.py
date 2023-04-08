@@ -71,11 +71,11 @@ def solve_fast(s:list, t:list):
     for s_pos in range(len(s)):
         for t_pos in range(len(t)):
 
-            if dp.get((s_pos + 1, t_pos + 1)) == None:
+            if s_pos + 1 < len(s) and t_pos + 1 < len(t) and dp.get((s_pos + 1, t_pos + 1)) == None:
                 dp[(s_pos + 1, t_pos + 1)]= set()
-            if dp.get((s_pos + 1, t_pos)) == None:
+            if s_pos + 1 < len(s) and dp.get((s_pos + 1, t_pos)) == None:
                 dp[(s_pos + 1, t_pos)]= set()
-            if dp.get((s_pos, t_pos + 1)) == None:
+            if t_pos + 1 < len(t) and dp.get((s_pos, t_pos + 1)) == None:
                 dp[(s_pos, t_pos + 1)]= set()
             
             for l in dp[(s_pos, t_pos)]:
@@ -83,35 +83,88 @@ def solve_fast(s:list, t:list):
                 # diagonal case
                 if s_pos + 1 < len(s) and t_pos + 1 < len(t):
                     if s[s_pos + 1] == t[t_pos + 1]:
-                        dp[(s_pos + 1, t_pos + 1)].add(l + s[s_pos + 1])
+                        dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + s[s_pos + 1])
+                    # else:
+                    #     dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + '()')
                 
                     else:
-                        if is_subsequence(l + '(', t[:t_pos+2]) and is_subsequence(l + '(', s[:s_pos+2]):
+                        if is_subsequence(l + '(', t[:t_pos + 2]) and is_subsequence(l + '(', s[:s_pos + 2]):
                             dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + '(')
 
-                        elif is_subsequence(l + ')', t[:t_pos+2]) and is_subsequence(l + ')', s[:s_pos+2]):
+                        elif is_subsequence(l + ')', t[:t_pos + 2]) and is_subsequence(l + ')', s[:s_pos + 2]):
                             dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + ')')
 
                         else:
                             dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + '()')
                     
                 # horizontal case
-                if s_pos+1 < len(s):
-                    if is_subsequence(l, s[:s_pos+2]) and is_subsequence(l, t[:t_pos+1]):
-                        dp[(s_pos+1, t_pos)] = set_balance(dp[(s_pos+1, t_pos)], l)
+                if s_pos + 1 < len(s):
+                    if is_subsequence(l, s[:s_pos + 2]):
+                        dp[(s_pos + 1, t_pos)] = set_balance(dp[(s_pos + 1, t_pos)], l)
 
                     else:
-                        dp[(s_pos+1, t_pos)] = set_balance(dp[(s_pos+1, t_pos)], l + s[s_pos + 1])
+                        dp[(s_pos + 1, t_pos)] = set_balance(dp[(s_pos + 1, t_pos)], l + s[s_pos + 1])
                 
                 # vertical case
-                if t_pos+1 < len(t):
-                    if is_subsequence(l, t[:t_pos+2]) and is_subsequence(l, s[:s_pos+1]):
+                if t_pos + 1 < len(t):
+                    if is_subsequence(l, t[:t_pos + 2]):
                         dp[(s_pos, t_pos + 1)] = set_balance(dp[(s_pos, t_pos + 1)], l)
 
                     else:
                         dp[(s_pos, t_pos + 1)] = set_balance(dp[(s_pos, t_pos + 1)], l + t[t_pos + 1])
     
     # print ('dp', dp)
-    print('l', dp[(len(s)-1, len(t)-1)])
+    # print('l', dp[(len(s)-1, len(t)-1)])
+
+    return [balance(x) for x in dp[(len(s)-1, len(t)-1)]]
+
+
+def fast(s:list, t:list):
+    dp= {(-1, -1): {''}}
+
+    for s_pos in range(-1, len(s)):
+        for t_pos in range(-1, len(t)):
+
+            if s_pos + 1 < len(s) and t_pos + 1 < len(t) and dp.get((s_pos + 1, t_pos + 1)) == None:
+                dp[(s_pos + 1, t_pos + 1)]= set()
+            if s_pos + 1 < len(s) and dp.get((s_pos + 1, t_pos)) == None:
+                dp[(s_pos + 1, t_pos)]= set()
+            if t_pos + 1 < len(t) and dp.get((s_pos, t_pos + 1)) == None:
+                dp[(s_pos, t_pos + 1)]= set()
+            
+            for l in dp[(s_pos, t_pos)]:
+                
+                # diagonal case
+                if s_pos + 1 < len(s) and t_pos + 1 < len(t):
+                    if s[s_pos + 1] == t[t_pos + 1]:
+                        dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + s[s_pos + 1])
+                
+                    else:
+                        if is_subsequence(l + '(', t[:t_pos + 2]) and is_subsequence(l + '(', s[:s_pos + 2]):
+                            dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + '(')
+
+                        elif is_subsequence(l + ')', t[:t_pos + 2]) and is_subsequence(l + ')', s[:s_pos + 2]):
+                            dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + ')')
+
+                        else:
+                            dp[(s_pos + 1, t_pos + 1)] = set_balance(dp[(s_pos + 1, t_pos + 1)], l + '()')
+                    
+                # horizontal case
+                if s_pos + 1 < len(s):
+                    if is_subsequence(l, s[:s_pos + 2]):
+                        dp[(s_pos + 1, t_pos)] = set_balance(dp[(s_pos + 1, t_pos)], l)
+
+                    else:
+                        dp[(s_pos + 1, t_pos)] = set_balance(dp[(s_pos + 1, t_pos)], l + s[s_pos + 1])
+                
+                # vertical case
+                if t_pos + 1 < len(t):
+                    if is_subsequence(l, t[:t_pos + 2]):
+                        dp[(s_pos, t_pos + 1)] = set_balance(dp[(s_pos, t_pos + 1)], l)
+
+                    else:
+                        dp[(s_pos, t_pos + 1)] = set_balance(dp[(s_pos, t_pos + 1)], l + t[t_pos + 1])
+    
+    print ('dp', dp)
     return [balance(x) for x in dp[(len(s)-1, len(t)-1)]]
 
