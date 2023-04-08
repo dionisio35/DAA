@@ -1,7 +1,7 @@
 from generator import generate_n
 
 from brute_force import brute_force_algorithm
-from dynamic_solve import solve, fast_solve, fast_bf, solve_fast
+from dynamic_solve import solve_fast, fast
 from dp2 import dp2
 
 from time import time
@@ -70,17 +70,19 @@ def test(method, times:int, min_len:int, max_len:int, seed:int=None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("Spies")
-    parser.add_argument('-m', help="Method to test", type=str, default='dp2', choices=['dp2'])
+    parser.add_argument('-m', help="Method to test", type=str, default='dp2', choices=['dp2', 'fast', 'solve_fast'])
     parser.add_argument('-l', help="Max string", type=int)
     parser.add_argument('-r', help="Min and max range of string", type=int, nargs=2)
     parser.add_argument('-s', help="Seed", type=int, default=None)
     parser.add_argument('-t', help="Times to run", type=int, default=1)
     args: Namespace = parser.parse_args()
 
-    if args.m == 'solve':
-        method = solve
-    elif args.m == 'dp2':
+    if args.m == 'dp2':
         method = dp2
+    elif args.m == 'fast':
+        method = fast
+    elif args.m == 'solve_fast':
+        method = solve_fast
 
     if args.l:
         test(method, args.t, args.l, args.l, args.s)
