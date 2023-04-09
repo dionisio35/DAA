@@ -1,29 +1,24 @@
-import numpy as np
-
-
-
 
 def fast(s:list, t:list):
-    dp= {(-1, -1): {0: 0}}
+    dp= {(0, 0): {0: 0}}
 
-    for s_pos in range(-1, len(s)):
-        for t_pos in range(-1, len(t)):
+    for s_pos in range(len(s) + 1):
+        for t_pos in range(len(t) + 1):
             for balance, lenght in zip(dp[(s_pos, t_pos)].keys(), dp[(s_pos, t_pos)].values()):
                 
                 # generate next dictionaries
-                if s_pos + 1 < len(s) and t_pos + 1 < len(t) and dp.get((s_pos + 1, t_pos + 1)) == None:
+                if s_pos < len(s) and t_pos < len(t) and dp.get((s_pos + 1, t_pos + 1)) == None:
                     dp[(s_pos + 1, t_pos + 1)]= dict()
-                if s_pos + 1 < len(s) and dp.get((s_pos + 1, t_pos)) == None:
+                if s_pos < len(s) and dp.get((s_pos + 1, t_pos)) == None:
                     dp[(s_pos + 1, t_pos)]= dict()
-                if t_pos + 1 < len(t) and dp.get((s_pos, t_pos + 1)) == None:
+                if t_pos < len(t) and dp.get((s_pos, t_pos + 1)) == None:
                     dp[(s_pos, t_pos + 1)]= dict()
                 
-                    
                 # diagonal case
-                if s_pos + 1 < len(s) and t_pos + 1 < len(t) and s[s_pos] == t[t_pos]:
+                if s_pos < len(s) and t_pos < len(t) and s[s_pos] == t[t_pos]:
                     
                     current = balance + 1 if s[s_pos] == '(' else balance -1
-                    if current > 0:
+                    if current >= 0:
                         if dp[(s_pos + 1, t_pos + 1)].get(current) is not None:
                             dp[(s_pos + 1, t_pos + 1)][current] = min(dp[(s_pos + 1, t_pos + 1)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
@@ -35,9 +30,9 @@ def fast(s:list, t:list):
                             dp[(s_pos + 1, t_pos + 1)][balance] = dp[(s_pos, t_pos)][balance] + 2
 
                 # horizontal case
-                if s_pos + 1 < len(s):
+                if s_pos  < len(s):
                     current = balance + 1 if s[s_pos] == '(' else balance -1
-                    if current > 0:
+                    if current >= 0:
                         if dp[(s_pos + 1, t_pos)].get(current) is not None:
                             dp[(s_pos + 1, t_pos)][current] = min(dp[(s_pos + 1, t_pos)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
@@ -50,9 +45,9 @@ def fast(s:list, t:list):
                 
 
                 # vertical case
-                if t_pos + 1 < len(t):
+                if t_pos  < len(t):
                     current = balance + 1 if t[t_pos] == '(' else balance -1
-                    if current > 0:
+                    if current >= 0:
                         if dp[(s_pos, t_pos + 1)].get(current) is not None:
                             dp[(s_pos, t_pos + 1)][current] = min(dp[(s_pos, t_pos + 1)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
@@ -63,24 +58,20 @@ def fast(s:list, t:list):
                         else:
                             dp[(s_pos, t_pos + 1)][balance] = dp[(s_pos, t_pos)][balance] + 2
 
-    print(dp)
     return lookback(s, t, dp)
-
-
-
 
 
 
 def lookback(s: str, t: str, dp):
     balance= sorted(
         list(
-            dp[(len(s)-1, len(t)-1)].keys()
+            dp[(len(s), len(t))].keys()
         )
     )[0]
 
     solution= ')' * balance
-    s_pos = len(s) -1
-    t_pos = len(t) -1
+    s_pos = len(s)
+    t_pos = len(t)
 
     while s_pos > 0 or t_pos > 0:
         
@@ -153,6 +144,3 @@ def lookback(s: str, t: str, dp):
     
     return ''.join([i for i in reversed(solution)])
 
-
-
-print(fast('())(', ')(()'))
