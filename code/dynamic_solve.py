@@ -27,7 +27,7 @@ def fast(s:list, t:list):
                         if dp[(s_pos + 1, t_pos + 1)].get(current) is not None:
                             dp[(s_pos + 1, t_pos + 1)][current] = min(dp[(s_pos + 1, t_pos + 1)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
-                            dp[(s_pos + 1, t_pos + 1)][current] = dp[(s_pos, t_pos)] + 1
+                            dp[(s_pos + 1, t_pos + 1)][current] = dp[(s_pos, t_pos)][balance] + 1
                     else:
                         if dp[(s_pos + 1, t_pos + 1)].get(balance) is not None:
                             dp[(s_pos + 1, t_pos + 1)][balance] = min(dp[(s_pos + 1, t_pos + 1)][balance], dp[(s_pos, t_pos)][balance] + 2)
@@ -41,7 +41,7 @@ def fast(s:list, t:list):
                         if dp[(s_pos + 1, t_pos)].get(current) is not None:
                             dp[(s_pos + 1, t_pos)][current] = min(dp[(s_pos + 1, t_pos)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
-                            dp[(s_pos + 1, t_pos)][current] = dp[(s_pos, t_pos)] + 1
+                            dp[(s_pos + 1, t_pos)][current] = dp[(s_pos, t_pos)][balance] + 1
                     else:
                         if dp[(s_pos + 1, t_pos)].get(balance) is not None:
                             dp[(s_pos + 1, t_pos)][balance] = min(dp[(s_pos + 1, t_pos)][balance], dp[(s_pos, t_pos)][balance] + 2)
@@ -56,14 +56,15 @@ def fast(s:list, t:list):
                         if dp[(s_pos, t_pos + 1)].get(current) is not None:
                             dp[(s_pos, t_pos + 1)][current] = min(dp[(s_pos, t_pos + 1)][current], dp[(s_pos, t_pos)][balance] + 1)
                         else:
-                            dp[(s_pos, t_pos + 1)][current] = dp[(s_pos, t_pos)] + 1
+                            dp[(s_pos, t_pos + 1)][current] = dp[(s_pos, t_pos)][balance] + 1
                     else:
                         if dp[(s_pos, t_pos + 1)].get(balance) is not None:
                             dp[(s_pos, t_pos + 1)][balance] = min(dp[(s_pos, t_pos + 1)][balance], dp[(s_pos, t_pos)][balance] + 2)
                         else:
                             dp[(s_pos, t_pos + 1)][balance] = dp[(s_pos, t_pos)][balance] + 2
 
-    return
+    print(dp)
+    return lookback(s, t, dp)
 
 
 
@@ -71,19 +72,24 @@ def fast(s:list, t:list):
 
 
 def lookback(s: str, t: str, dp):
-    balance= sorted(list(dp[len(s)][len(t)].keys()))[0]
+    balance= sorted(
+        list(
+            dp[(len(s)-1, len(t)-1)].keys()
+        )
+    )[0]
+
     solution= ')' * balance
-    s_pos = len(s)
-    t_pos = len(t)
+    s_pos = len(s) -1
+    t_pos = len(t) -1
 
     while s_pos > 0 or t_pos > 0:
         
         if s_pos>0 and t_pos>0 and s[s_pos-1]==t[t_pos-1]:
             
             current= 1 if s[s_pos - 1] == '(' else -1
-            if (dp[s_pos][t_pos].get(balance) != None
-                and dp[s_pos-1][t_pos-1].get(balance-current) != None
-                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos-1].get(balance-current) + 1):
+            if (dp[(s_pos, t_pos)].get(balance) is not None
+                and dp[(s_pos-1, t_pos-1)].get(balance-current) is not None
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos-1)].get(balance-current) + 1):
 
                 solution+= s[s_pos - 1]
                 balance -= current
@@ -93,9 +99,9 @@ def lookback(s: str, t: str, dp):
             
             elif (balance == 0
                   and s[s_pos-1] == ')'
-                  and dp[s_pos-1][t_pos-1].get(balance) != None
-                  and dp[s_pos][t_pos].get(balance) != None
-                  and dp[s_pos-1][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                  and dp[(s_pos-1, t_pos-1)].get(balance) is not None
+                  and dp[(s_pos, t_pos)].get(balance) is not None
+                  and dp[(s_pos-1, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
                 solution+=')('
                 s_pos-=1
@@ -105,9 +111,9 @@ def lookback(s: str, t: str, dp):
         if s_pos>0:
 
             current= 1 if s[s_pos - 1] == '(' else -1
-            if (dp[s_pos][t_pos].get(balance) != None
-                and dp[s_pos-1][t_pos].get(balance-current) != None
-                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos].get(balance-current) + 1):
+            if (dp[(s_pos, t_pos)].get(balance) is not None
+                and dp[(s_pos-1, t_pos)].get(balance-current) is not None
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos)].get(balance-current) + 1):
 
                 solution+= s[s_pos - 1]
                 balance -= current
@@ -115,9 +121,9 @@ def lookback(s: str, t: str, dp):
                 continue
             elif (balance == 0
                   and s[s_pos-1] == ')'
-                  and dp[s_pos-1][t_pos].get(balance) != None
-                  and dp[s_pos][t_pos].get(balance) != None
-                  and dp[s_pos-1][t_pos].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                  and dp[(s_pos-1, t_pos)].get(balance) is not None
+                  and dp[(s_pos, t_pos)].get(balance) is not None
+                  and dp[(s_pos-1, t_pos)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
                 solution+=')('
                 s_pos-=1
@@ -126,9 +132,9 @@ def lookback(s: str, t: str, dp):
         if t_pos>0:
 
             current= 1 if t[t_pos - 1] == '(' else -1
-            if (dp[s_pos][t_pos].get(balance) != None
-                and dp[s_pos][t_pos-1].get(balance-current) != None
-                and dp[s_pos][t_pos].get(balance) == dp[s_pos][t_pos-1].get(balance-current) + 1):
+            if (dp[(s_pos, t_pos)].get(balance) is not None
+                and dp[(s_pos, t_pos-1)].get(balance-current) is not None
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos, t_pos-1)].get(balance-current) + 1):
 
                 solution+= t[t_pos - 1]
                 balance -= current
@@ -137,17 +143,16 @@ def lookback(s: str, t: str, dp):
             
             elif (balance == 0
                   and t[t_pos-1] == ')'
-                  and dp[s_pos][t_pos-1].get(balance) != None
-                  and dp[s_pos][t_pos].get(balance) != None
-                  and dp[s_pos][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                  and dp[(s_pos, t_pos-1)].get(balance) is not None
+                  and dp[(s_pos, t_pos)].get(balance) is not None
+                  and dp[(s_pos, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
                 solution+=')('
                 t_pos-=1
                 continue
+    
     return ''.join([i for i in reversed(solution)])
 
 
 
-
-
-
+print(fast('())(', ')(()'))
