@@ -168,3 +168,90 @@ def fast(s:list, t:list):
     print ('dp', dp)
     return [balance(x) for x in dp[(len(s)-1, len(t)-1)]]
 
+
+
+def lookback(s: str, t:str, dp):
+    balance= sorted(list(dp[len(s)][len(t)].keys()))[0]
+
+    solution= ''
+    for i in range(balance):
+        solution+=')'
+
+    x=len(s)
+    y=len(t)
+    while x>0 or y>0:
+        
+        if x>0 and y>0 and s[x-1]==t[y-1]:
+            
+            current= 1 if s[x - 1] == '(' else -1
+            
+            if (dp[x][y].get(balance) != None
+                and dp[x-1][y-1].get(balance-current) != None
+                and dp[x][y].get(balance) == dp[x-1][y-1].get(balance-current) + 1):
+
+                solution+= s[x - 1]
+                balance -= current
+                x-=1
+                y-=1
+                continue
+            
+            elif (balance == 0
+                  and s[x-1] == ')'
+                  and dp[x-1][y-1].get(balance) != None
+                  and dp[x][y].get(balance) != None
+                  and dp[x-1][y-1].get(balance) + 2 == dp[x][y].get(balance)):
+                
+                solution+=')('
+                x-=1
+                y-=1
+                continue
+        
+        if x>0:
+
+            current= 1 if s[x - 1] == '(' else -1
+            if (dp[x][y].get(balance) != None
+                and dp[x-1][y].get(balance-current) != None
+                and dp[x][y].get(balance) == dp[x-1][y].get(balance-current) + 1):
+
+                solution+= s[x - 1]
+                balance -= current
+                x-=1
+                continue
+            elif (balance == 0
+                  and s[x-1] == ')'
+                  and dp[x-1][y].get(balance) != None
+                  and dp[x][y].get(balance) != None
+                  and dp[x-1][y].get(balance) + 2 == dp[x][y].get(balance)):
+                
+                solution+=')('
+                x-=1
+                continue
+        
+        if y>0:
+
+            current= 1 if t[y - 1] == '(' else -1
+            if (dp[x][y].get(balance) != None
+                and dp[x][y-1].get(balance-current) != None
+                and dp[x][y].get(balance) == dp[x][y-1].get(balance-current) + 1):
+
+                solution+= t[y - 1]
+                balance -= current
+                y-=1
+                continue
+            
+            elif (balance == 0
+                  and t[y-1] == ')'
+                  and dp[x][y-1].get(balance) != None
+                  and dp[x][y].get(balance) != None
+                  and dp[x][y-1].get(balance) + 2 == dp[x][y].get(balance)):
+                
+                solution+=')('
+                y-=1
+                continue
+    return solution
+
+
+
+
+
+
