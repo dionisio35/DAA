@@ -144,7 +144,7 @@ def lookback(s: str, t: str, dp):
                 solution+=')('
                 t_pos-=1
                 continue
-    return solution
+    return ''.join([i for i in reversed(solution)])
 
 
 

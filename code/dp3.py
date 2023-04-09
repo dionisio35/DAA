@@ -10,7 +10,22 @@ def create_matrix(s,t,n,m):
         dp[0][i]=[t[0:i]]
     return dp
 
-            
+
+def only_positive_bf(chain):
+    return chain
+    new_chain=""
+    k=0
+    for i in chain:
+        if  i == ")":
+            if k>0:
+                new_chain+=i
+                k-=1
+            else:
+                new_chain+="("
+        new_chain+=i
+    return new_chain
+
+
 def filter_solutions(possibles_sequences):    
     m=10e31
     sequences:set=set()
@@ -23,22 +38,27 @@ def filter_solutions(possibles_sequences):
             m=mi
 
         elif mi == m:
-            sequences.add(i)
+            sequences.add(only_positive_bf(i))
  
     return list(sequences)
 
 
-def get_better_chains(ct,cs,t,s,a,b):
+def get_better_chains(ct,cs,cst,t,s,a,b):
     possibles_sequences:set=set()
     for csi in cs:
             if is_subsequence(csi,t):
                 possibles_sequences.add(csi)
-            possibles_sequences.add(csi + t[len(t)-1])
+            possibles_sequences.add(csi + t[len(t)-1])          
 
     for cti in ct:
         if is_subsequence(cti,s):
             possibles_sequences.add(cti)    
         possibles_sequences.add(cti + s[len(s)-1])
+
+    for csti in cst:
+        if is_subsequence(csti,t) and is_subsequence(csti,s):
+            possibles_sequences.add(csti)
+        possibles_sequences.add(csti + t[len(t)-1]+s[len(s)-1])
 
     return filter_solutions(possibles_sequences)
 
@@ -61,6 +81,6 @@ def dp3(s,t,a="(",b=")"):
     dp=create_matrix(s,t,n,m)
     for i in range(1,len(dp)):
         for j in range(1,len(dp[0])):
-            dp[i][j] = get_better_chains(dp[i-1][j], dp[i][j-1],dp[0][j][0],dp[i][0][0],a,b)
+            dp[i][j] = get_better_chains(dp[i-1][j], dp[i][j-1],dp[i-1][j-1],dp[0][j][0],dp[i][0][0],a,b)
     solutions = get_balanced_chains(dp[len(dp)-1][ len(dp[0])-1],a,b)
     return get_min(solutions)
