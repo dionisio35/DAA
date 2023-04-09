@@ -172,81 +172,77 @@ def fast(s:list, t:list):
 
 def lookback(s: str, t:str, dp):
     balance= sorted(list(dp[len(s)][len(t)].keys()))[0]
+    solution= ')' * balance
+    s_pos = len(s)
+    t_pos = len(t)
 
-    solution= ''
-    for i in range(balance):
-        solution+=')'
-
-    x=len(s)
-    y=len(t)
-    while x>0 or y>0:
+    while s_pos > 0 or t_pos > 0:
         
-        if x>0 and y>0 and s[x-1]==t[y-1]:
+        if s_pos>0 and t_pos>0 and s[s_pos-1]==t[t_pos-1]:
             
-            current= 1 if s[x - 1] == '(' else -1
-            
-            if (dp[x][y].get(balance) != None
-                and dp[x-1][y-1].get(balance-current) != None
-                and dp[x][y].get(balance) == dp[x-1][y-1].get(balance-current) + 1):
+            current= 1 if s[s_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos-1][t_pos-1].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos-1].get(balance-current) + 1):
 
-                solution+= s[x - 1]
+                solution+= s[s_pos - 1]
                 balance -= current
-                x-=1
-                y-=1
+                s_pos-=1
+                t_pos-=1
                 continue
             
             elif (balance == 0
-                  and s[x-1] == ')'
-                  and dp[x-1][y-1].get(balance) != None
-                  and dp[x][y].get(balance) != None
-                  and dp[x-1][y-1].get(balance) + 2 == dp[x][y].get(balance)):
+                  and s[s_pos-1] == ')'
+                  and dp[s_pos-1][t_pos-1].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos-1][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
                 
                 solution+=')('
-                x-=1
-                y-=1
+                s_pos-=1
+                t_pos-=1
                 continue
         
-        if x>0:
+        if s_pos>0:
 
-            current= 1 if s[x - 1] == '(' else -1
-            if (dp[x][y].get(balance) != None
-                and dp[x-1][y].get(balance-current) != None
-                and dp[x][y].get(balance) == dp[x-1][y].get(balance-current) + 1):
+            current= 1 if s[s_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos-1][t_pos].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos].get(balance-current) + 1):
 
-                solution+= s[x - 1]
+                solution+= s[s_pos - 1]
                 balance -= current
-                x-=1
+                s_pos-=1
                 continue
             elif (balance == 0
-                  and s[x-1] == ')'
-                  and dp[x-1][y].get(balance) != None
-                  and dp[x][y].get(balance) != None
-                  and dp[x-1][y].get(balance) + 2 == dp[x][y].get(balance)):
+                  and s[s_pos-1] == ')'
+                  and dp[s_pos-1][t_pos].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos-1][t_pos].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
                 
                 solution+=')('
-                x-=1
+                s_pos-=1
                 continue
         
-        if y>0:
+        if t_pos>0:
 
-            current= 1 if t[y - 1] == '(' else -1
-            if (dp[x][y].get(balance) != None
-                and dp[x][y-1].get(balance-current) != None
-                and dp[x][y].get(balance) == dp[x][y-1].get(balance-current) + 1):
+            current= 1 if t[t_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos][t_pos-1].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos][t_pos-1].get(balance-current) + 1):
 
-                solution+= t[y - 1]
+                solution+= t[t_pos - 1]
                 balance -= current
-                y-=1
+                t_pos-=1
                 continue
             
             elif (balance == 0
-                  and t[y-1] == ')'
-                  and dp[x][y-1].get(balance) != None
-                  and dp[x][y].get(balance) != None
-                  and dp[x][y-1].get(balance) + 2 == dp[x][y].get(balance)):
+                  and t[t_pos-1] == ')'
+                  and dp[s_pos][t_pos-1].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
                 
                 solution+=')('
-                y-=1
+                t_pos-=1
                 continue
     return solution
 
