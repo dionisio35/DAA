@@ -50,14 +50,95 @@ def dp5(s,t,a="(",b=")"):
                             dp[i][j+1][k] = min(dp[i][j][k]+2, dp[i][j+1][k] if dp[i][j+1].get(k) else 2e31)
                     else:
                         dp[i][j+1][k+1] = min(dp[i][j][k]+1, dp[i][j+1][k+1] if dp[i][j+1].get(k+1) else 2e31)
+    
+    printy(dp)
+    return lookback(s,t , dp)
 
-
-     ########################################################               
+def printy(dp):               
     for i in range(len(dp)):
         for j in range(len(dp[i])):
 
             print(i,j,dp[i][j])
     print(np.array(dp))
+
+
+
+def lookback(s: str, t:str, dp):
+    balance= sorted(list(dp[len(s)][len(t)].keys()))[0]
+    solution= ')' * balance
+    s_pos = len(s)
+    t_pos = len(t)
+
+    while s_pos > 0 or t_pos > 0:
+        
+        if s_pos>0 and t_pos>0 and s[s_pos-1]==t[t_pos-1]:
+            
+            current= 1 if s[s_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos-1][t_pos-1].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos-1].get(balance-current) + 1):
+
+                solution+= s[s_pos - 1]
+                balance -= current
+                s_pos-=1
+                t_pos-=1
+                continue
+            
+            elif (balance == 0
+                  and s[s_pos-1] == ')'
+                  and dp[s_pos-1][t_pos-1].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos-1][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                
+                solution+=')('
+                s_pos-=1
+                t_pos-=1
+                continue
+        
+        if s_pos>0:
+
+            current= 1 if s[s_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos-1][t_pos].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos-1][t_pos].get(balance-current) + 1):
+
+                solution+= s[s_pos - 1]
+                balance -= current
+                s_pos-=1
+                continue
+            elif (balance == 0
+                  and s[s_pos-1] == ')'
+                  and dp[s_pos-1][t_pos].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos-1][t_pos].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                
+                solution+=')('
+                s_pos-=1
+                continue
+        
+        if t_pos>0:
+
+            current= 1 if t[t_pos - 1] == '(' else -1
+            if (dp[s_pos][t_pos].get(balance) != None
+                and dp[s_pos][t_pos-1].get(balance-current) != None
+                and dp[s_pos][t_pos].get(balance) == dp[s_pos][t_pos-1].get(balance-current) + 1):
+
+                solution+= t[t_pos - 1]
+                balance -= current
+                t_pos-=1
+                continue
+            
+            elif (balance == 0
+                  and t[t_pos-1] == ')'
+                  and dp[s_pos][t_pos-1].get(balance) != None
+                  and dp[s_pos][t_pos].get(balance) != None
+                  and dp[s_pos][t_pos-1].get(balance) + 2 == dp[s_pos][t_pos].get(balance)):
+                
+                solution+=')('
+                t_pos-=1
+                continue
+    return ''.join([i for i in reversed(solution)])
+
 
 
                 
@@ -68,4 +149,4 @@ s="())("
 t=")((("
 
 a=dp5(s,t)
-
+print(a)
