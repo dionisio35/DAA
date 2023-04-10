@@ -80,9 +80,3 @@ def dp3(s,t,a="(",b=")"):
                         dp[i][j+1].append((chain[0]+"(",chain[1]+1))
 
     return get_min(dp[n][m])
-    
-s="())("
-t=")((("
-
-a=dp3(s,t)
-print(a)

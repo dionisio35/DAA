@@ -135,14 +135,3 @@ def lookback(s: str, t:str, dp):
                 continue
     return ''.join([i for i in reversed(solution)])
 
-
-
-                
-               
-
-
-s="())("
-t=")((("
-
-a=dp5(s,t)
-print(a)

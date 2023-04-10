@@ -86,15 +86,4 @@ def dp5(s,t,a="(",b=")"):
     print(np.array(dp))
 
 
-                
-
-
-
-
-                
-
-
-s="())("
-t=")((("
-
-a=dp5(s,t)
+ 
