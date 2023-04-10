@@ -31,8 +31,8 @@ def get_balance(l,a,b):
     
 
 def min_sequence(possibles_sequences,a,b):    
-    m=10e31
-    n=(10e31,10e31)
+    m=2e31
+    n=(2e31,2e31)
     s=""
     for i in possibles_sequences:
         mi=len(i)
@@ -52,7 +52,6 @@ def min_sequence(possibles_sequences,a,b):
                     n = (ni0,ni1)
                     s = i   
     return s
-
 
 
 def get_better_chain(ct,cs,t,s,a,b):

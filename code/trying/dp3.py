@@ -13,17 +13,6 @@ def create_matrix(s,t,n,m):
 
 def only_positive_bf(chain):
     return chain
-    new_chain=""
-    k=0
-    for i in chain:
-        if  i == ")":
-            if k>0:
-                new_chain+=i
-                k-=1
-            else:
-                new_chain+="("
-        new_chain+=i
-    return new_chain
 
 
 def filter_solutions(possibles_sequences):    

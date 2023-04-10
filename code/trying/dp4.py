@@ -1,6 +1,6 @@
 
 from tools import *
-from dp3 import *
+from trying.dp3 import *
 from brute_force import *
 
 def dp4(s,t,a="(",b=")"):
