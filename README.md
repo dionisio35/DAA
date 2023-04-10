@@ -129,7 +129,7 @@ Una solución óptima de nuestro problema para las cadenas $s_{i}$ y la solució
 
 #### Solucion dinámica 2
 
-Para solucionar los problemas del algoritmo anterior se propone un ajuste a esta solución (se encuentra en `dp2.py` ) en el cual en cada espacio de la matriz en lugar de estar guardando una cadena óptima, se van a estar guardando todas las cadenas generadas de la misma forma que el algoritmo anterior que tengan a $s[0:i]$ y $t[0:j]$ como subsecuencias (se intentó hacer este algoritmo también guardando todas las cadenas que tenían menor valor del tamaño de la cadena + factor de desbalance e igualmente fallaba en algunos casos). Cuando ya la matriz está completa se balancean todas las cadenas y se elige de todas la menor.
+Para solucionar los problemas del algoritmo anterior se propone un ajuste a esta solución (se encuentra en `dp2.py` ) en el cual en cada espacio de la matriz $dp$ en lugar de estar guardando una cadena óptima, se van a estar guardando todas las cadenas generadas de la misma forma que el algoritmo anterior que tengan a $s[0:i]$ y $t[0:j]$ como subsecuencias (se intentó hacer este algoritmo también guardando todas las cadenas que tenían menor valor del tamaño de la cadena + factor de desbalance e igualmente fallaba en algunos casos). Cuando ya la matriz está completa se balancean todas las cadenas y se elige de todas la menor.
 
 Esto está garantizado, es una solución correcta de nuestro problema porque basicamente lo que hace es buscar todas las posibles cadenas que cumplan [2] y [3] en cada caso y de generar la siguiente cadena a partir de las posibles soluciones anteriores, por lo que se garantiza que se llega a una solución óptima.
 
@@ -137,7 +137,14 @@ Su complejidad es bastante cercana a la del caso inicial de fuerza bruta pero co
 
 #### Solucion dinámica 3 y Solución Óptima 
 
-Para mejorar las dos soluciones anteriores tanto en efectividad como en complejidad
+Para mejorar las dos soluciones anteriores tanto en efectividad como en complejidad se proponen algunos cambios en la conformación de la matriz $dp$, en cada posición de la matriz $dp[i][j]$ se va a añadir un diccionario en el cual las llaves k van a ser los factores de desbalance con los que se llega a esa posición y los valores asociados a estas llaves serán el tamaño (int) de la menor cadena que cumple 2 y 3 para esas posiciones *i,j* y tiene factor de desbalance *k*. En este caso específico en el factor de desbalance solamente se están contando los paréntesis abiertos que faltarían por colocarle a la cadena, ya que siempre se tiene en cuenta contar un paréntesis abierto por cada paréntesis cerrado que aparezca y que el factor de desbalance sea 0.
+
+Por cada $dp[i][j]$ se itera por cada llave del diccionario, por cada *k* 
+
+
+La complejidad de este algoritmo es *nm* a la hora de recorrer toda la tabla generando los tamaños de las futuras cadenas, luego queda recorrer todos los *k* generados en cada posición de la matriz, como los factores de desbalance nunca serán mayores que el tamaño de la solución y la solución sismpre está acotada por *2(n+m)* => en cada *i,j* nunca habrán más de *2(n+m)*  valores de k distintos y *2(n+m)*  es O(*max(n,m)*) =>T(n,m)=*nm 2(n+m)* y *2(n+m)* => T(n)=O(*nm max(n,m)*)
+
+
 
 
 ### Ejecución
