@@ -100,7 +100,7 @@ $$
 En cada posición $i,j$ de la matriz para $i \in [1,n]$ y  $j \in [1,m]$ se va a guardar la menor cadena que cumpla que $s[0:i]$ y $t[0:j]$ son subsecuencias de esta.
 
 
-Esta cadena está construida a partir de las cadenas que se encuentra en las posiciones $[i-1][j]$ y $[i][j-1]$ de la matriz, de la siguiente forma:
+Esta cadena está construída a partir de las cadenas que se encuentra en las posiciones $[i-1][j]$ y $[i][j-1]$ de la matriz, de la siguiente forma:
 
 - Se comprueba si la cadena en la posicion $[i-1][j]$ cumple que $t[0:j]$ es subsecuencia de esta, en este caso se guarda como posible cadena seleccionada.
 - Igualmente se comprueba que la cadena en la posición $[i][j-1]$ cumple que $s[0:i]$ es subsecuencia de esta, en este caso se guarda como posible cadena seleccionada.
@@ -139,10 +139,12 @@ Su complejidad es bastante cercana a la del caso inicial de fuerza bruta pero co
 
 Para mejorar las dos soluciones anteriores tanto en efectividad como en complejidad se proponen algunos cambios en la conformación de la matriz $dp$, en cada posición de la matriz $dp[i][j]$ se va a añadir un diccionario en el cual las llaves k van a ser los factores de desbalance con los que se llega a esa posición y los valores asociados a estas llaves serán el tamaño (int) de la menor cadena que cumple 2 y 3 para esas posiciones *i,j* y tiene factor de desbalance *k*. En este caso específico en el factor de desbalance solamente se están contando los paréntesis abiertos que faltarían por colocarle a la cadena, ya que siempre se tiene en cuenta contar un paréntesis abierto por cada paréntesis cerrado que aparezca y que el factor de desbalance sea 0.
 
-Por cada $dp[i][j]$ se itera por cada llave del diccionario, por cada *k* 
+Por cada $dp[i][j]$ se itera por cada llave del diccionario, por cada *k* y a partir de esta se generan para la matriz los valores de $dp[i+1][j]$, $dp[i][j+1]$ y $dp[i+1][j+1]$ siguiendo la lógica de tomar los valores de $s[i]$, $t[j]$ o ambos, respectivamente para cada caso y compararlos con *")"*, si esta comparación es true y  el factor de desbalance k = 0 se aumenta el tamaño en 2 y se mantiene k=0, si k>0 se aumenta en 1 y k disminuye en 1 y en caso de que la comparación inicial sea falsa o sea que sea igual a *"("* se aumenta k en 1 al igual que el tamaño de la cadena, todo esto guardándolos en cada una de las posiciones mencionadas anteriormente. Todos estos valores se guardan si no había un factor de balance igual anterior en esta posición *i,j* o que sea el mínimo valor de tamaño entre este y el que ya estaba en esa posición.
+
+De esta manera estamos asegurando el recoger tamaños de cadenas válidos que cumplan que s y t sean subsecuencias de la cadena formada y que además sean el mínimo posible. Asegurando (aunque no demostrando) que en la posición $n,m$ de $dp$, la menor suma de k,k->value es el tamaño de la menor cadena que resuelve nuestro problema.
 
 
-La complejidad de este algoritmo es *nm* a la hora de recorrer toda la tabla generando los tamaños de las futuras cadenas, luego queda recorrer todos los *k* generados en cada posición de la matriz, como los factores de desbalance nunca serán mayores que el tamaño de la solución y la solución sismpre está acotada por *2(n+m)* => en cada *i,j* nunca habrán más de *2(n+m)*  valores de k distintos y *2(n+m)*  es O(*max(n,m)*) =>T(n,m)=*nm 2(n+m)* y *2(n+m)* => T(n)=O(*nm max(n,m)*)
+La complejidad de este algoritmo es *nm* a la hora de recorrer toda la tabla generando los tamaños de las futuras cadenas, luego queda recorrer todos los *k* generados en cada posición de la matriz, como los factores de desbalance nunca serán mayores que el tamaño de la solución y la solución sismpre está acotada por *2(n+m)* => en cada *i,j* nunca habrán más de *2(n+m)*  valores de k distintos y *2(n+m)*  es O(*max(n,m)*) =>T(n,m)=*nm 2(n+m)* y *2(n+m)* => T(n)=O(*nm max(n,m)*). No se toma en cuenta la complejidad de la construcción de la cadena a través de la matriz porque es mucho menor que la construcción de esta.
 
 
 
