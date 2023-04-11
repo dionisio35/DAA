@@ -79,74 +79,68 @@ def generate_solution(s: str, t: str, dp):
     while s_pos > 0 or t_pos > 0:
         
         # diagonal case
-        if s_pos>0 and t_pos>0 and s[s_pos-1] == t[t_pos-1]:
+        if s_pos > 0 and t_pos > 0 and s[s_pos - 1] == t[t_pos - 1]:
             
-            current= 1 if s[s_pos - 1] == '(' else -1
-            if (dp[(s_pos, t_pos)].get(balance) is not None
-                and dp[(s_pos-1, t_pos-1)].get(balance-current) is not None
-                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos-1)].get(balance-current) + 1):
-
+            current = -1 if s[s_pos - 1] == '(' else 1
+            if dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos - 1, t_pos - 1)].get(balance + current) is not None \
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos - 1, t_pos - 1)].get(balance + current) + 1:
                 solution = s[s_pos - 1] + solution
-                balance -= current
-                s_pos-=1
-                t_pos-=1
+                balance += current
+                s_pos -= 1
+                t_pos -= 1
                 continue
             
-            elif (balance == 0
-                  and s[s_pos-1] == ')'
-                  and dp[(s_pos-1, t_pos-1)].get(balance) is not None
-                  and dp[(s_pos, t_pos)].get(balance) is not None
-                  and dp[(s_pos-1, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
-                
+            elif balance == 0 \
+                and s[s_pos - 1] == ')' \
+                and dp[(s_pos - 1, t_pos - 1)].get(balance) is not None \
+                and dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos - 1, t_pos - 1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance):
                 solution = '()' + solution
-                s_pos-=1
-                t_pos-=1
+                s_pos -= 1
+                t_pos -= 1
                 continue
         
         # horizontal case
         if s_pos>0:
 
-            current= 1 if s[s_pos - 1] == '(' else -1
-            if (dp[(s_pos, t_pos)].get(balance) is not None
-                and dp[(s_pos-1, t_pos)].get(balance-current) is not None
-                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos)].get(balance-current) + 1):
-
+            current= -1 if s[s_pos - 1] == '(' else 1
+            if dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos - 1, t_pos)].get(balance + current) is not None \
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos - 1, t_pos)].get(balance + current) + 1:
                 solution = s[s_pos - 1] + solution
-                balance -= current
-                s_pos-=1
+                balance += current
+                s_pos -= 1
                 continue
             
-            elif (balance == 0
-                  and s[s_pos-1] == ')'
-                  and dp[(s_pos-1, t_pos)].get(balance) is not None
-                  and dp[(s_pos, t_pos)].get(balance) is not None
-                  and dp[(s_pos-1, t_pos)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
-                
+            elif balance == 0 \
+                and s[s_pos - 1] == ')' \
+                and dp[(s_pos - 1, t_pos)].get(balance) is not None \
+                and dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos - 1, t_pos)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance):
                 solution = '()' + solution
-                s_pos-=1
+                s_pos -= 1
                 continue
         
         # vertical case
         if t_pos>0:
 
-            current= 1 if t[t_pos - 1] == '(' else -1
-            if (dp[(s_pos, t_pos)].get(balance) is not None
-                and dp[(s_pos, t_pos-1)].get(balance-current) is not None
-                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos, t_pos-1)].get(balance-current) + 1):
-
+            current= -1 if t[t_pos - 1] == '(' else 1
+            if dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos, t_pos - 1)].get(balance + current) is not None \
+                and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos, t_pos - 1)].get(balance + current) + 1:
                 solution = t[t_pos - 1] + solution
-                balance -= current
-                t_pos-=1
+                balance += current
+                t_pos -= 1
                 continue
             
-            elif (balance == 0
-                  and t[t_pos-1] == ')'
-                  and dp[(s_pos, t_pos-1)].get(balance) is not None
-                  and dp[(s_pos, t_pos)].get(balance) is not None
-                  and dp[(s_pos, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
-                
+            elif balance == 0 \
+                and t[t_pos - 1] == ')' \
+                and dp[(s_pos, t_pos - 1)].get(balance) is not None \
+                and dp[(s_pos, t_pos)].get(balance) is not None \
+                and dp[(s_pos, t_pos - 1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance):
                 solution = '()' + solution
-                t_pos-=1
+                t_pos -= 1
                 continue
     
     

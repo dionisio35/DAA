@@ -147,12 +147,12 @@ De esta manera estamos asegurando el recoger tamaños de cadenas válidos que cu
 
 
 Luego que se tiene la longitud de cada cadena resultante y su factor de desbalance procedemos a quedarnos con la cadena de menor tamaño. Como ya se planteó anteriormente solo van a existir saltos entre casillas de la matríz de hasta $2$ máximo. Teníendo esto se comienza por la mejor cadena final ya seleccionada anteriormente y se reconstruye volviendo hacia atrás en el camino teniendo como opción moverse en sentido vertical, horizontal y diagonal como:
-- Tener un camino con diferencia de $1$, por tanto ocurre un cambio de balance.
-- Tener un camino de diferencia $2$, manteniendose la misma posición en la lista de balances con longitudes.
 
-Para esto el caso con mayor prioridad es el de moverse en la diagonal con camino  si estando en $s[i]$ y $t[j]$ se cumple que $s[i] == t[j]$, pues nos movemos dos lugares en la matriz, segido del caso de que se cumpla lo anterior pero solo se permiten saltos de $2$. Mientras que nos quedan como indistintos los casos de movernos en el eje horizontal o vertical.
+- Tener un camino con diferencia de $1$, por tanto ocurre un cambio de balance. Moviéndose en la lista de balances debido al cambio de factoe de balance según el paréntesis que aparezca(si es un *"("* queda $b - 1$ y si es *")"* tenemos $b + 1$). Esto solo es posible cuando el factor de desbalance es mayor que $0$.
+- Tener un camino de diferencia $2$, manteniendose la misma posición en la lista de balances con longitudes, pues esto solo ocurre cuando el factor de desbalance es igual a cero y se tiene un *")"*, lo cual indica que no va a exixtir un *"("* para cerrarlo por lo que se agrega en ese punto la cadena "( )" pues la posición en que se agrega el paréntesis no afecta al resultado final.
 
-Como se está contruyendo la cadena de atrás hacia adelante todas las subcadenas que se agregan se ponen al inicio de la cadena actual: *current_string* = *new_string* + *current_string*.
+Como se está contruyendo la cadena de atrás hacia adelante todas las subcadenas que se agregan se ponen al inicio de la cadena actual: *current_string* = *new_string* + *current_string*. Y al finalizar el recorrido se agregan los paréntesis *")"* necesarios según el factor de desbalance que se había planteado al principio.
+
 
 Para los casos de movernos en distancia de $1$ se agrega el paréntesis correspondiente al lugar del movimiento, mientras que en el otro caso se agrega la cadena "( )" en ese momento el factor de desbalance es $0$ y se tiene un paréntesis cerrado el cual no va a tener paréntesis abierto, y se agrega aquí pues no afecta la posición en la que se agrega el parentesis al resultado final.
 
