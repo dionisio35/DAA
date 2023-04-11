@@ -1,5 +1,10 @@
+def dp_solution(s:str, t:str):
+    dp = generate_matrix(s, t)
+    sol = generate_solution(s, t, dp)
+    return sol
 
-def fast(s:list, t:list):
+
+def generate_matrix(s:str, t:str):
     dp= {(0, 0): {0: 0}}
 
     for s_pos in range(len(s) + 1):
@@ -58,24 +63,20 @@ def fast(s:list, t:list):
                         else:
                             dp[(s_pos, t_pos + 1)][balance] = dp[(s_pos, t_pos)][balance] + 2
 
-    return lookback(s, t, dp)
+    return dp
 
 
 
-def lookback(s: str, t: str, dp):
-    balance= sorted(
-        list(
-            dp[(len(s), len(t))].keys()
-        )
-    )[0]
-
+def generate_solution(s: str, t: str, dp):
+    balance= sorted(list(dp[(len(s), len(t))].keys()))[0]
     solution= ')' * balance
     s_pos = len(s)
     t_pos = len(t)
 
     while s_pos > 0 or t_pos > 0:
         
-        if s_pos>0 and t_pos>0 and s[s_pos-1]==t[t_pos-1]:
+        # diagonal case
+        if s_pos>0 and t_pos>0 and s[s_pos-1] == t[t_pos-1]:
             
             current= 1 if s[s_pos - 1] == '(' else -1
             if (dp[(s_pos, t_pos)].get(balance) is not None
@@ -99,6 +100,7 @@ def lookback(s: str, t: str, dp):
                 t_pos-=1
                 continue
         
+        # horizontal case
         if s_pos>0:
 
             current= 1 if s[s_pos - 1] == '(' else -1
@@ -120,6 +122,7 @@ def lookback(s: str, t: str, dp):
                 s_pos-=1
                 continue
         
+        # vertical case
         if t_pos>0:
 
             current= 1 if t[t_pos - 1] == '(' else -1
