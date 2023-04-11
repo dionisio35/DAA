@@ -39,7 +39,7 @@ Por lo que para que una cadena $q$ sea solución de nuestro problema debe cumpli
 ##### Definiciones
 - Sea una subcadena una secuencia de caracteres que aparece de forma consecutiva en una cadena.
 - Sea una subsecuencia una secuencia de caracteres que aparece en una cadena, pero no necesariamente de forma consecutiva.
-- Sea el factor de desbalance de una cadena la cantidad de "(" que quedan sin cerrar y la cantidad de ")" que aparecen sin haber sido abiertos, por lo cual el factor de desbalance de una cadena representa la cantidad de parentesis abiertos y cerrados a agregar a esta para que este balanceada. - Si el factor de desbalance es 0, la cadena esta balanceada.
+- Sea el factor de desbalance de una cadena la cantidad de "(" que quedan sin cerrar y la cantidad de ")" que aparecen sin haber sido abiertos, por lo cual el factor de desbalance de una cadena representa la cantidad de paréntesis abiertos y cerrados a agregar a esta para que este balanceada. - Si el factor de desbalance es 0, la cadena esta balanceada.
 
 Demostración a través de la construcción de una solución, de que siempre existe una cadena balanceada que que cumple que $s$ y $t$ sean subsecuencias de esta y ademas este balanceada $\Rightarrow$ el problema tiene solución.
 
@@ -115,7 +115,7 @@ Este algoritmo es bastante más eficiente que lo que se tenía hasta el momento 
 
 
 
-###### Contraejemplo que demuestra que partiendo de una solucion optima de $s[0:i]$ y $t[0:j]$ no siempre se llega a una solucion óptima de $s$ y $t$.
+##### Contraejemplo que demuestra que partiendo de una solucion optima de $s[0:i]$ y $t[0:j]$ no siempre se llega a una solucion óptima de $s$ y $t$.
 Se tienen las cadenas:
 $s=$ "()())" 
 $t=$ "(()))"
@@ -135,17 +135,32 @@ Esto está garantizado, es una solución correcta de nuestro problema porque bas
 
 Su complejidad es bastante cercana a la del caso inicial de fuerza bruta pero con la ventaja de que no se generan cadenas que no cumplen con [2] y [3]. Si el algoritmo anterior tiene complejidad *O(nm max(m,n))* este tiene por cada espacio de la matriz busca por todas las cadenas que se guardan y a partir de estas genera la siguiente posicion por lo que la complejidad temporal de esta parte es exponencial por lo que es mucho mayor que *O(nm max(m,n))* lo que implica que el algoritmo aunque eficaz es muy lento e ineficiente.
 
-#### Solucion dinámica 3 y Solución Óptima 
+#### Solucion dinámica 3 y Solución Óptima
 
-Para mejorar las dos soluciones anteriores tanto en efectividad como en complejidad se proponen algunos cambios en la conformación de la matriz $dp$, en cada posición de la matriz $dp[i][j]$ se va a añadir un diccionario en el cual las llaves k van a ser los factores de desbalance con los que se llega a esa posición y los valores asociados a estas llaves serán el tamaño (int) de la menor cadena que cumple 2 y 3 para esas posiciones *i,j* y tiene factor de desbalance *k*. En este caso específico en el factor de desbalance solamente se están contando los paréntesis abiertos que faltarían por colocarle a la cadena, ya que siempre se tiene en cuenta contar un paréntesis abierto por cada paréntesis cerrado que aparezca y que el factor de desbalance sea 0.
+Luego de un arduo período de trabajo, pruebas e investigaciones hallamos un algoritmo con el que apoyarnos para lograr la solución óptima al problema: *Shortest Common Supersequence*.
 
-Por cada $dp[i][j]$ se itera por cada llave del diccionario, por cada *k* y a partir de esta se generan para la matriz los valores de $dp[i+1][j]$, $dp[i][j+1]$ y $dp[i+1][j+1]$ siguiendo la lógica de tomar los valores de $s[i]$, $t[j]$ o ambos, respectivamente para cada caso y compararlos con *")"*, si esta comparación es true y  el factor de desbalance k = 0 se aumenta el tamaño en 2 y se mantiene k=0, si k>0 se aumenta en 1 y k disminuye en 1 y en caso de que la comparación inicial sea falsa o sea que sea igual a *"("* se aumenta k en 1 al igual que el tamaño de la cadena, todo esto guardándolos en cada una de las posiciones mencionadas anteriormente. Todos estos valores se guardan si no había un factor de balance igual anterior en esta posición *i,j* o que sea el mínimo valor de tamaño entre este y el que ya estaba en esa posición.
+Para mejorar las dos soluciones anteriores tanto en efectividad como en complejidad se proponen algunos cambios en la conformación de la matriz $dp$, en cada posición de la matriz $dp[i][j]$ se va a añadir un diccionario en el cual las llaves $b$ van a ser los factores de desbalance con los que se llega a esa posición y los valores asociados a estas llaves serán el tamaño (int) de la menor cadena que cumple 2 y 3 para esas posiciones $i,j$ y tiene factor de desbalance $b$. En este caso específico en el factor de desbalance solamente se están contando los paréntesis abiertos que faltarían por colocarle a la cadena, ya que siempre se tiene en cuenta contar un paréntesis abierto por cada paréntesis cerrado que aparezca y que el factor de desbalance sea $0$.
 
-De esta manera estamos asegurando el recoger tamaños de cadenas válidos que cumplan que s y t sean subsecuencias de la cadena formada y que además sean el mínimo posible. Asegurando (aunque no demostrando) que en la posición $n,m$ de $dp$, la menor suma de k,k->value es el tamaño de la menor cadena que resuelve nuestro problema.
+Por cada $dp[i][j]$ se itera por cada llave del diccionario, por cada $b$ y a partir de esta se generan para la matriz los valores de $dp[i+1][j]$, $dp[i][j+1]$ y $dp[i+1][j+1]$ siguiendo la lógica de tomar los valores de $s[i]$, $t[j]$ o ambos, respectivamente para cada caso y compararlos con *")"*, si esta comparación es true y  el factor de desbalance $b = 0$ se aumenta el tamaño en $2$ y se mantiene $b=0$, si $b>0$ se aumenta en $1$ y $b$ disminuye en $1$ y en caso de que la comparación inicial sea falsa o sea que sea igual a *"("* se aumenta $b$ en $1$ al igual que el tamaño de la cadena, todo esto guardándolos en cada una de las posiciones mencionadas anteriormente. Todos estos valores se guardan si no había un factor de balance igual anterior en esta posición $i,j$ o que sea el mínimo valor de tamaño entre este y el que ya estaba en esa posición.
+
+De esta manera estamos asegurando el recoger tamaños de cadenas válidos que cumplan que $s$ y $t$ sean subsecuencias de la cadena formada y que además sean el mínimo posible. Asegurando (aunque no demostrando) que en la posición $n,m$ de $dp$, la menor suma de $b$,$b \Rightarrow value$ es el tamaño de la menor cadena que resuelve nuestro problema.
 
 
-La complejidad de este algoritmo es *nm* a la hora de recorrer toda la tabla generando los tamaños de las futuras cadenas, luego queda recorrer todos los *k* generados en cada posición de la matriz, como los factores de desbalance nunca serán mayores que el tamaño de la solución y la solución sismpre está acotada por *2(n+m)* => en cada *i,j* nunca habrán más de *2(n+m)*  valores de k distintos y *2(n+m)*  es O(*max(n,m)*) =>T(n,m)=*nm 2(n+m)* y *2(n+m)* => T(n)=O(*nm max(n,m)*). No se toma en cuenta la complejidad de la construcción de la cadena a través de la matriz porque es mucho menor que la construcción de esta.
+Luego que se tiene la longitud de cada cadena resultante y su factor de desbalance procedemos a quedarnos con la cadena de menor tamaño. Como ya se planteó anteriormente solo van a existir saltos entre casillas de la matríz de hasta $2$ máximo. Teníendo esto se comienza por la mejor cadena final ya seleccionada anteriormente y se reconstruye volviendo hacia atrás en el camino teniendo como opción moverse en sentido vertical, horizontal y diagonal como:
+- Tener un camino con diferencia de $1$, por tanto ocurre un cambio de balance.
+- Tener un camino de diferencia $2$, manteniendose la misma posición en la lista de balances con longitudes.
 
+Para esto el caso con mayor prioridad es el de moverse en la diagonal con camino  si estando en $s[i]$ y $t[j]$ se cumple que $s[i] == t[j]$, pues nos movemos dos lugares en la matriz, segido del caso de que se cumpla lo anterior pero solo se permiten saltos de $2$. Mientras que nos quedan como indistintos los casos de movernos en el eje horizontal o vertical.
+
+Como se está contruyendo la cadena de atrás hacia adelante todas las subcadenas que se agregan se ponen al inicio de la cadena actual: *current_string* = *new_string* + *current_string*.
+
+Para los casos de movernos en distancia de $1$ se agrega el paréntesis correspondiente al lugar del movimiento, mientras que en el otro caso se agrega la cadena "( )" en ese momento el factor de desbalance es $0$ y se tiene un paréntesis cerrado el cual no va a tener paréntesis abierto, y se agrega aquí pues no afecta la posición en la que se agrega el parentesis al resultado final.
+
+
+La complejidad de este algoritmo es $nm$ a la hora de recorrer toda la tabla generando los tamaños de las futuras cadenas, luego queda recorrer todos los $b$ generados en cada posición de la matriz, como los factores de desbalance nunca serán mayores que el tamaño de la solución y la solución sismpre está acotada por $2(n+m) \Rightarrow$ en cada $i,j$ nunca habrán más de $2(n+m)$  valores de $b$ distintos y $2(n+m)$  es $O(max(n,m)) \Rightarrow T(n,m)= nm 2(n+m)$ y $2(n+m) \Rightarrow T(n)=O(nm max(n,m))$. No se toma en cuenta la complejidad de la construcción de la cadena a través de la matriz porque es mucho menor que la construcción de esta.
+
+
+**Nota**: Es este último caso se habla de $dp$ como una matríz de diccionarios pero se encuentra implementado como un diccionario de diccionarios, teniendo el primero como llave una tupla que simula las posiciones en una matríz.
 
 
 

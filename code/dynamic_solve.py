@@ -67,11 +67,14 @@ def generate_matrix(s:str, t:str):
 
 
 
+
+
 def generate_solution(s: str, t: str, dp):
-    balance= sorted(list(dp[(len(s), len(t))].keys()))[0]
-    solution= ')' * balance
+    initial_balance = sorted(list(dp[(len(s), len(t))].keys()))[0]
+    balance= initial_balance
     s_pos = len(s)
     t_pos = len(t)
+    solution= ''
 
     while s_pos > 0 or t_pos > 0:
         
@@ -83,7 +86,7 @@ def generate_solution(s: str, t: str, dp):
                 and dp[(s_pos-1, t_pos-1)].get(balance-current) is not None
                 and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos-1)].get(balance-current) + 1):
 
-                solution+= s[s_pos - 1]
+                solution = s[s_pos - 1] + solution
                 balance -= current
                 s_pos-=1
                 t_pos-=1
@@ -95,7 +98,7 @@ def generate_solution(s: str, t: str, dp):
                   and dp[(s_pos, t_pos)].get(balance) is not None
                   and dp[(s_pos-1, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
-                solution+=')('
+                solution = '()' + solution
                 s_pos-=1
                 t_pos-=1
                 continue
@@ -108,17 +111,18 @@ def generate_solution(s: str, t: str, dp):
                 and dp[(s_pos-1, t_pos)].get(balance-current) is not None
                 and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos-1, t_pos)].get(balance-current) + 1):
 
-                solution+= s[s_pos - 1]
+                solution = s[s_pos - 1] + solution
                 balance -= current
                 s_pos-=1
                 continue
+            
             elif (balance == 0
                   and s[s_pos-1] == ')'
                   and dp[(s_pos-1, t_pos)].get(balance) is not None
                   and dp[(s_pos, t_pos)].get(balance) is not None
                   and dp[(s_pos-1, t_pos)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
-                solution+=')('
+                solution = '()' + solution
                 s_pos-=1
                 continue
         
@@ -130,7 +134,7 @@ def generate_solution(s: str, t: str, dp):
                 and dp[(s_pos, t_pos-1)].get(balance-current) is not None
                 and dp[(s_pos, t_pos)].get(balance) == dp[(s_pos, t_pos-1)].get(balance-current) + 1):
 
-                solution+= t[t_pos - 1]
+                solution = t[t_pos - 1] + solution
                 balance -= current
                 t_pos-=1
                 continue
@@ -141,9 +145,9 @@ def generate_solution(s: str, t: str, dp):
                   and dp[(s_pos, t_pos)].get(balance) is not None
                   and dp[(s_pos, t_pos-1)].get(balance) + 2 == dp[(s_pos, t_pos)].get(balance)):
                 
-                solution+=')('
+                solution = '()' + solution
                 t_pos-=1
                 continue
     
-    return ''.join([i for i in reversed(solution)])
-
+    
+    return solution + (')' * initial_balance)
